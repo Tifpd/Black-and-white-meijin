@@ -4,47 +4,50 @@ const fs = require('fs');
 
 const STAT_URL = 'https://www.playok.com/en/stat.phtml?u=gomokuworld&g=gm&sk=5';
 const DATA_FILE = 'data.json';
+const SETTINGS_FILE = 'settings.json';
 
 async function scrape() {
     try {
-        console.log("Fetching stats page...");
-        const response = await axios.get(STAT_URL, {
-            headers: { 'User-Agent': 'Mozilla/5.0' } // Předstíráme, že jsme prohlížeč
-        });
-        
+        console.log("Starting scraper...");
+        const response = await axios.get(STAT_URL, { headers: { 'User-Agent': 'Mozilla/5.0' } });
         const $ = cheerio.load(response.data);
+        
         let store = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-        if (!store.history) store = { players: {}, history: [] };
+        let settings = { startDate: "2026-01-01" };
+        
+        if (fs.existsSync(SETTINGS_FILE)) {
+            settings = JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8'));
+        }
 
+        const startDate = new Date(settings.startDate);
         const tourLinks = [];
-        // Hledáme všechny odkazy, které obsahují tour.phtml
+
+        // Hledání odkazů na turnaje
         $('a').each((i, el) => {
             const href = $(el).attr('href');
             if (href && href.includes('tour.phtml?t=')) {
-                const id = href.split('t=')[1].split('&')[0]; // Očistíme ID od případných dalších parametrů
+                const id = href.split('t=')[1].split('&')[0];
                 if (!store.history.find(t => t.id == id)) {
                     tourLinks.push({ id: id, url: 'https://www.playok.com' + (href.startsWith('/') ? href : '/' + href) });
                 }
             }
         });
 
-        console.log(`Detected unique tournament links: ${tourLinks.length}`);
+        console.log(`New tournaments found: ${tourLinks.length}`);
 
-        if (tourLinks.length === 0) {
-            console.log("No new or valid tournaments found. Check if the URL is correct or if Playok changed the layout.");
-            return;
-        }
-
-        for (const tour of tourLinks.slice(0, 5)) { // Zkusíme nejdřív prvních 5 nejnovějších
-            console.log(`Processing tournament ID: ${tour.id}...`);
+        // Zpracování nových turnajů
+        for (const tour of tourLinks) {
+            console.log(`Processing ${tour.id}...`);
             const tRes = await axios.get(tour.url, { headers: { 'User-Agent': 'Mozilla/5.0' } });
             const $t = cheerio.load(tRes.data);
+            
+            // Získání data z turnaje (Playok ho má obvykle v hlavičce nebo u popisu)
+            // Pokud ho nenajdeme přesně, použijeme dnešní datum pro nové turnaje
+            let dateStr = new Date().toISOString().split('T')[0]; 
+            
             const players = [];
-
-            // Playok tabulka výsledků - zkusíme najít jakoukoli tabulku s daty
             $t('table tr').each((i, row) => {
                 const cells = $t(row).find('td');
-                // Hledáme řádky, kde je v prvním sloupci číslo (pořadí) a ve druhém nick
                 if (cells.length >= 3) {
                     const rankText = $t(cells[0]).text().trim();
                     const nick = $t(cells[1]).text().trim();
@@ -59,30 +62,30 @@ async function scrape() {
             if (players.length > 0) {
                 store.history.push({
                     id: tour.id,
-                    date: new Date().toLocaleDateString('en-GB'),
+                    date: dateStr, // Ukládáme ve formátu YYYY-MM-DD pro lepší řazení
                     data: players
                 });
-                console.log(`Successfully added ${players.length} players from tournament ${tour.id}`);
-            } else {
-                console.log(`Could not find player data in tournament ${tour.id}.`);
             }
         }
 
-        // Přepočet
+        // --- PŘEPOČET ŽEBŘÍČKU PODLE FILTRU ---
         store.players = {};
         store.history.forEach(t => {
-            t.data.forEach(p => {
-                if (!store.players[p.nick]) store.players[p.nick] = { b: 0, u: 0 };
-                store.players[p.nick].b += p.body;
-                store.players[p.nick].u += 1;
-            });
+            const tourDate = new Date(t.date);
+            if (tourDate >= startDate) {
+                t.data.forEach(p => {
+                    if (!store.players[p.nick]) store.players[p.nick] = { b: 0, u: 0 };
+                    store.players[p.nick].b += p.body;
+                    store.players[p.nick].u += 1;
+                });
+            }
         });
 
         fs.writeFileSync(DATA_FILE, JSON.stringify(store, null, 2));
-        console.log("All done!");
+        console.log(`Update complete. Filtering from: ${settings.startDate}`);
 
     } catch (error) {
-        console.error("Scraping error:", error.message);
+        console.error("Error:", error.message);
     }
 }
 

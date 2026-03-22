@@ -4,76 +4,98 @@ const fs = require('fs');
 
 const STAT_URL = 'https://www.playok.com/en/stat.phtml?u=gomokuworld&g=gm&sk=5';
 const DATA_FILE = 'data.json';
+const SETTINGS_FILE = 'settings.json';
 
 async function scrape() {
     try {
+        console.log("--- START SEZÓNNÍHO SCRAPERU ---");
+        
         let store = { seasons: {} };
         if (fs.existsSync(DATA_FILE)) {
-            store = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+            const content = fs.readFileSync(DATA_FILE, 'utf8');
+            if (content.trim()) store = JSON.parse(content);
+        }
+        if (!store.seasons) store.seasons = {};
+
+        let settings = { manualAssignments: {} };
+        if (fs.existsSync(SETTINGS_FILE)) {
+            settings = JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8'));
         }
 
+        let jobs = [];
+
+        // A) NOVÉ TURNAJE (Automaticky z Playok stat)
         const response = await axios.get(STAT_URL, { headers: { 'User-Agent': 'Mozilla/5.0' } });
         const $ = cheerio.load(response.data);
-        const tourLinks = [];
+        const now = new Date();
+        const currentSeason = `${now.getFullYear()}-${now.getMonth() < 6 ? "H1" : "H2"}`;
 
-        // 1. Najdeme nové turnaje a zkontrolujeme, jestli už nejsou v libovolné sezóně
         $('a[href*="tour.phtml?t="]').each((i, el) => {
-            const href = $(el).attr('href');
-            const id = href.split('t=')[1].split('&')[0];
-            
-            let alreadyExists = false;
-            for (let s in store.seasons) {
-                if (store.seasons[s].history.find(t => t.id == id)) alreadyExists = true;
-            }
-            
-            if (!alreadyExists) {
-                tourLinks.push({ id, url: 'https://www.playok.com' + (href.startsWith('/') ? href : '/' + href) });
+            const id = $(el).attr('href').split('t=')[1].split('&')[0];
+            if (!isAlreadyStored(store, id)) {
+                jobs.push({ id, season: currentSeason });
             }
         });
 
-        console.log(`Nalezeno ${tourLinks.length} nových turnajů.`);
-
-        for (const tour of tourLinks) {
-            const tRes = await axios.get(tour.url, { headers: { 'User-Agent': 'Mozilla/5.0' } });
-            const $t = cheerio.load(tRes.data);
-            
-            // Určení sezóny (aktuální čas běhu bota)
-            const now = new Date();
-            const year = now.getFullYear();
-            const half = now.getMonth() < 6 ? "H1" : "H2";
-            const seasonKey = `${year}-${half}`;
-
-            if (!store.seasons[seasonKey]) store.seasons[seasonKey] = { players: {}, history: [] };
-
-            const players = [];
-            $t('table tr').each((i, row) => {
-                const cells = $t(row).find('td');
-                if (cells.length >= 3) {
-                    const nick = $t(cells[1]).text().trim();
-                    const score = parseFloat($t(cells[2]).text().replace(',', '.'));
-                    if (nick && !isNaN(score) && nick.toLowerCase() !== 'bye') {
-                        players.push({ nick, body: score });
-                        
-                        // Zápis do statistik sezóny
-                        let sP = store.seasons[seasonKey].players;
-                        if (!sP[nick]) sP[nick] = { b: 0, u: 0 };
-                        sP[nick].b += score;
-                        sP[nick].u += 1;
-                    }
+        // B) HISTORICKÉ TURNAJE (Z tvého settings.json)
+        for (let sKey in settings.manualAssignments) {
+            settings.manualAssignments[sKey].forEach(id => {
+                if (!isAlreadyStored(store, id)) {
+                    jobs.push({ id, season: sKey });
                 }
             });
+        }
 
-            if (players.length > 0) {
-                store.seasons[seasonKey].history.push({ 
-                    id: tour.id, 
-                    date: now.toISOString().split('T')[0], 
-                    data: players 
+        console.log(`Celkem k vyřízení: ${jobs.length} turnajů.`);
+
+        for (let job of jobs) {
+            console.log(`Zpracovávám turnaj ${job.id} pro ${job.season}...`);
+            try {
+                const tRes = await axios.get(`https://www.playok.com/en/tour.phtml?t=${job.id}`, { headers: { 'User-Agent': 'Mozilla/5.0' } });
+                const $t = cheerio.load(tRes.data);
+                
+                if (!store.seasons[job.season]) store.seasons[job.season] = { players: {}, history: [] };
+
+                const players = [];
+                $t('table tr').each((i, row) => {
+                    const cells = $t(row).find('td');
+                    if (cells.length >= 3) {
+                        const rankText = $t(cells[0]).text().trim();
+                        const nick = $t(cells[1]).text().trim();
+                        const score = parseFloat($t(cells[2]).text().replace(',', '.'));
+                        
+                        if (rankText.match(/^\d+\.?$/) && nick && !isNaN(score) && nick.toLowerCase() !== 'bye') {
+                            players.push({ nick, body: score });
+                            
+                            let sP = store.seasons[job.season].players;
+                            if (!sP[nick]) sP[nick] = { b: 0, u: 0 };
+                            sP[nick].b += score;
+                            sP[nick].u += 1;
+                        }
+                    }
                 });
+
+                if (players.length > 0) {
+                    store.seasons[job.season].history.push({ id: job.id, data: players });
+                }
+                // Pauza 500ms proti zablokování
+                await new Promise(resolve => setTimeout(resolve, 500)); 
+            } catch (err) {
+                console.log(`Chyba u ${job.id}: ${err.message}`);
             }
         }
 
         fs.writeFileSync(DATA_FILE, JSON.stringify(store, null, 2));
-        console.log("Hotovo.");
-    } catch (e) { console.error(e.message); }
+        console.log("--- HOTOVO ---");
+
+    } catch (e) { console.error("Chyba:", e.message); }
 }
+
+function isAlreadyStored(store, id) {
+    for (let s in store.seasons) {
+        if (store.seasons[s].history && store.seasons[s].history.find(t => t.id == id)) return true;
+    }
+    return false;
+}
+
 scrape();

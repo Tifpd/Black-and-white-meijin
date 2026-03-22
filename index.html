@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLACK AND WHITE MEIJIN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* ... (tvé styly zůstávají stejné) ... */
+        :root { --bg: #ffffff; --text-main: #1a1a1a; --accent: #000; --gold: #d4af37; --silver: #9da1a4; --bronze: #ac7339; }
+        body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: var(--text-main); }
+        .header { padding: 90px 20px 60px 20px; text-align: center; }
+        .header h1 { font-family: 'Cinzel', serif; margin: 0; font-size: 3.2em; letter-spacing: 8px; text-transform: uppercase; }
+        .container { max-width: 800px; margin: 0 auto 100px auto; padding: 0 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 20px; text-transform: uppercase; font-size: 0.7em; letter-spacing: 2px; color: #999; border-bottom: 1px solid #eee; }
+        td { padding: 22px 20px; border-bottom: 1px solid #f2f2f2; font-size: 1.1em; }
+        .rank { font-weight: 800; width: 60px; color: #ccc; }
+        tr:nth-child(1) .rank { color: var(--gold); font-size: 1.4em; }
+        tr:nth-child(2) .rank { color: var(--silver); font-size: 1.3em; }
+        tr:nth-child(3) .rank { color: var(--bronze); font-size: 1.2em; }
+        .score-cell { font-weight: 800; text-align: right; }
+        .participation { color: #bbb; text-align: right; width: 100px; }
+    </style>
+</head>
+<body>
+    <div class="header"><h1>Black and White Meijin</h1></div>
+    <div class="container">
+        <table>
+            <thead>
+                <tr><th>Rank</th><th>Player</th><th style="text-align: right;">Points</th><th style="text-align: right;">Tournaments</th></tr>
+            </thead>
+            <tbody id="body"></tbody>
+        </table>
+    </div>
+
+<script>
+    // Načítáme data ze souboru data.json, který bude robot aktualizovat
+    fetch('data.json')
+        .then(response => response.json())
+        .then(store => {
+            const b = document.getElementById('body');
+            const sorted = Object.entries(store.players).sort((a, b) => b[1].b - a[1].b);
+            
+            if (sorted.length === 0) {
+                b.innerHTML = "<tr><td colspan='4' style='text-align:center;padding:50px;'>Awaiting automated update...</td></tr>";
+                return;
+            }
+
+            sorted.forEach((h, i) => {
+                b.innerHTML += `
+                    <tr>
+                        <td class="rank">${i+1}.</td>
+                        <td><span class="nick">${h[0]}</span></td>
+                        <td class="score-cell">${h[1].b.toFixed(1)}</td>
+                        <td class="participation">${h[1].u}</td>
+                    </tr>`;
+            });
+        });
+</script>
+</body>
+</html>

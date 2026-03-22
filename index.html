@@ -1,57 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cs">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BLACK AND WHITE MEIJIN</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Black and White Meijin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
     <style>
-        /* ... (tvé styly zůstávají stejné) ... */
-        :root { --bg: #ffffff; --text-main: #1a1a1a; --accent: #000; --gold: #d4af37; --silver: #9da1a4; --bronze: #ac7339; }
-        body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: var(--text-main); }
-        .header { padding: 90px 20px 60px 20px; text-align: center; }
-        .header h1 { font-family: 'Cinzel', serif; margin: 0; font-size: 3.2em; letter-spacing: 8px; text-transform: uppercase; }
-        .container { max-width: 800px; margin: 0 auto 100px auto; padding: 0 20px; }
-        table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; padding: 20px; text-transform: uppercase; font-size: 0.7em; letter-spacing: 2px; color: #999; border-bottom: 1px solid #eee; }
-        td { padding: 22px 20px; border-bottom: 1px solid #f2f2f2; font-size: 1.1em; }
-        .rank { font-weight: 800; width: 60px; color: #ccc; }
-        tr:nth-child(1) .rank { color: var(--gold); font-size: 1.4em; }
-        tr:nth-child(2) .rank { color: var(--silver); font-size: 1.3em; }
-        tr:nth-child(3) .rank { color: var(--bronze); font-size: 1.2em; }
-        .score-cell { font-weight: 800; text-align: right; }
-        .participation { color: #bbb; text-align: right; width: 100px; }
+        :root { --bg: #ffffff; --text: #000000; --accent: #f0f0f0; }
+        body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 40px 20px; line-height: 1.6; }
+        .container { max-width: 800px; margin: 0 auto; }
+        h1 { font-family: 'Cinzel', serif; text-align: center; font-size: 2.5em; letter-spacing: 8px; margin-bottom: 50px; text-transform: uppercase; border-bottom: 2px solid #000; padding-bottom: 20px; }
+        
+        #season-selector { text-align: center; margin-bottom: 40px; }
+        .season-btn { background: none; border: none; font-family: 'Cinzel', serif; cursor: pointer; margin: 0 15px; font-size: 1.1em; padding: 5px 10px; transition: 0.3s; color: #000; outline: none; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { font-family: 'Cinzel', serif; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8em; padding: 15px; border-bottom: 1px solid #eee; color: #888; text-align: left; }
+        td { padding: 15px; border-bottom: 1px solid #f9f9f9; }
+        tr:hover { background: var(--accent); }
+        .rank { font-weight: bold; width: 50px; }
+        .nick { font-family: 'Cinzel', serif; font-weight: 700; }
+        .score-cell { font-weight: bold; text-align: right; }
+        .participation { text-align: right; color: #888; font-size: 0.9em; }
+        .text-center { text-align: center; }
+        .empty-msg { text-align: center; padding: 40px; color: #888; font-style: italic; }
     </style>
 </head>
 <body>
-    <div class="header"><h1>Black and White Meijin</h1></div>
-    <div class="container">
-        <table>
-            <thead>
-                <tr><th>Rank</th><th>Player</th><th style="text-align: right;">Points</th><th style="text-align: right;">Tournaments</th></tr>
-            </thead>
-            <tbody id="body"></tbody>
-        </table>
-    </div>
+
+<div class="container">
+    <h1>Black and White Meijin</h1>
+    
+    <div id="season-selector"></div>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="text-left">Rank</th>
+                <th class="text-left">Player</th>
+                <th style="text-align: right;">Points</th>
+                <th style="text-align: right;">Tournaments</th>
+            </tr>
+        </thead>
+        <tbody id="body">
+            </tbody>
+    </table>
+</div>
 
 <script>
-    fetch('data.json')
-        .then(response => response.json())
-        .then(store => {
-            const b = document.getElementById('body');
-            
-            // Najdeme nejnovější sezónu (např. 2026-H1)
-            const availableSeasons = Object.keys(store.seasons || {}).sort().reverse();
-            
-            if (availableSeasons.length === 0) {
-                b.innerHTML = "<tr><td colspan='4' style='text-align:center;padding:50px;'>Awaiting automated season update...</td></tr>";
-                return;
-            }
+    let globalStore = {};
 
-            // Vybereme tu nejnovější (nebo můžeš natvrdo nastavit "2026-H1")
-            const activeSeason = availableSeasons[0]; 
-            const seasonData = store.seasons[activeSeason];
-            
+    function switchSeason(seasonKey) {
+        const b = document.getElementById('body');
+        b.innerHTML = "";
+        
+        const seasonData = globalStore.seasons[seasonKey];
+        if (!seasonData || !seasonData.players || Object.keys(seasonData.players).length === 0) {
+            b.innerHTML = "<tr><td colspan='4' class='empty-msg'>No data for this season yet.</td></tr>";
+        } else {
             const sorted = Object.entries(seasonData.players).sort((a, b) => b[1].b - a[1].b);
 
             sorted.forEach((h, i) => {
@@ -63,7 +69,52 @@
                         <td class="participation">${h[1].u}</td>
                     </tr>`;
             });
+        }
+
+        // Zvýraznění aktivního tlačítka
+        document.querySelectorAll('.season-btn').forEach(btn => {
+            if (btn.innerText === seasonKey) {
+                btn.style.opacity = "1";
+                btn.style.borderBottom = "2px solid black";
+                btn.style.fontWeight = "bold";
+            } else {
+                btn.style.opacity = "0.3";
+                btn.style.borderBottom = "2px solid transparent";
+                btn.style.fontWeight = "normal";
+            }
+        });
+    }
+
+    // Načtení dat
+    fetch('data.json?t=' + Date.now()) // ?t= zamezí mezipaměti prohlížeče
+        .then(r => r.json())
+        .then(store => {
+            globalStore = store;
+            const selector = document.getElementById('season-selector');
+            const seasons = Object.keys(store.seasons || {}).sort().reverse();
+
+            if (seasons.length === 0) {
+                document.getElementById('body').innerHTML = "<tr><td colspan='4' class='empty-msg'>Awaiting automated season update...</td></tr>";
+                return;
+            }
+
+            // Vytvoření tlačítek pro sezóny
+            seasons.forEach(s => {
+                const btn = document.createElement('button');
+                btn.innerText = s;
+                btn.className = 'season-btn';
+                btn.onclick = () => switchSeason(s);
+                selector.appendChild(btn);
+            });
+
+            // Automaticky zobrazit nejnovější sezónu
+            switchSeason(seasons[0]);
+        })
+        .catch(err => {
+            console.error("Error loading data:", err);
+            document.getElementById('body').innerHTML = "<tr><td colspan='4' class='empty-msg'>Error loading data.json. Check file format.</td></tr>";
         });
 </script>
+
 </body>
 </html>

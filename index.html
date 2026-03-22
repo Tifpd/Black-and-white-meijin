@@ -6,24 +6,23 @@
     <title>Black and White Meijin</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #ffffff; --text: #000000; --accent: #f0f0f0; }
-        body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 40px 20px; line-height: 1.6; }
+        :root { --bg: #ffffff; --text: #000000; --accent: #f5f5f5; }
+        body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 40px 10px; }
         .container { max-width: 800px; margin: 0 auto; }
-        h1 { font-family: 'Cinzel', serif; text-align: center; font-size: 2.5em; letter-spacing: 8px; margin-bottom: 50px; text-transform: uppercase; border-bottom: 2px solid #000; padding-bottom: 20px; }
+        h1 { font-family: 'Cinzel', serif; text-align: center; font-size: 2.2em; letter-spacing: 6px; margin-bottom: 40px; text-transform: uppercase; border-bottom: 2px solid #000; padding-bottom: 20px; }
         
-        #season-selector { text-align: center; margin-bottom: 40px; }
-        .season-btn { background: none; border: none; font-family: 'Cinzel', serif; cursor: pointer; margin: 0 15px; font-size: 1.1em; padding: 5px 10px; transition: 0.3s; color: #000; outline: none; }
+        #season-selector { text-align: center; margin-bottom: 30px; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+        .season-btn { background: none; border: none; font-family: 'Cinzel', serif; cursor: pointer; font-size: 1em; padding: 8px 15px; transition: 0.3s; color: #000; border-bottom: 2px solid transparent; }
         
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th { font-family: 'Cinzel', serif; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8em; padding: 15px; border-bottom: 1px solid #eee; color: #888; text-align: left; }
-        td { padding: 15px; border-bottom: 1px solid #f9f9f9; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { font-family: 'Cinzel', serif; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75em; padding: 12px; border-bottom: 1px solid #eee; color: #888; text-align: left; }
+        td { padding: 12px; border-bottom: 1px solid #fcfcfc; }
         tr:hover { background: var(--accent); }
-        .rank { font-weight: bold; width: 50px; }
-        .nick { font-family: 'Cinzel', serif; font-weight: 700; }
+        .rank { font-weight: bold; width: 40px; }
+        .nick { font-family: 'Cinzel', serif; font-weight: 700; color: #000; }
         .score-cell { font-weight: bold; text-align: right; }
-        .participation { text-align: right; color: #888; font-size: 0.9em; }
-        .text-center { text-align: center; }
-        .empty-msg { text-align: center; padding: 40px; color: #888; font-style: italic; }
+        .participation { text-align: right; color: #aaa; font-size: 0.85em; }
+        .empty-msg { text-align: center; padding: 50px; color: #999; font-style: italic; }
     </style>
 </head>
 <body>
@@ -36,8 +35,8 @@
     <table>
         <thead>
             <tr>
-                <th class="text-left">Rank</th>
-                <th class="text-left">Player</th>
+                <th>Rank</th>
+                <th>Player</th>
                 <th style="text-align: right;">Points</th>
                 <th style="text-align: right;">Tournaments</th>
             </tr>
@@ -59,7 +58,6 @@
             b.innerHTML = "<tr><td colspan='4' class='empty-msg'>No data for this season yet.</td></tr>";
         } else {
             const sorted = Object.entries(seasonData.players).sort((a, b) => b[1].b - a[1].b);
-
             sorted.forEach((h, i) => {
                 b.innerHTML += `
                     <tr>
@@ -71,7 +69,7 @@
             });
         }
 
-        // Zvýraznění aktivního tlačítka
+        // Vizuální označení aktivního tlačítka
         document.querySelectorAll('.season-btn').forEach(btn => {
             if (btn.innerText === seasonKey) {
                 btn.style.opacity = "1";
@@ -85,8 +83,7 @@
         });
     }
 
-    // Načtení dat
-    fetch('data.json?t=' + Date.now()) // ?t= zamezí mezipaměti prohlížeče
+    fetch('data.json?t=' + Date.now())
         .then(r => r.json())
         .then(store => {
             globalStore = store;
@@ -94,11 +91,10 @@
             const seasons = Object.keys(store.seasons || {}).sort().reverse();
 
             if (seasons.length === 0) {
-                document.getElementById('body').innerHTML = "<tr><td colspan='4' class='empty-msg'>Awaiting automated season update...</td></tr>";
+                document.getElementById('body').innerHTML = "<tr><td colspan='4' class='empty-msg'>Awaiting automated update...</td></tr>";
                 return;
             }
 
-            // Vytvoření tlačítek pro sezóny
             seasons.forEach(s => {
                 const btn = document.createElement('button');
                 btn.innerText = s;
@@ -107,12 +103,10 @@
                 selector.appendChild(btn);
             });
 
-            // Automaticky zobrazit nejnovější sezónu
             switchSeason(seasons[0]);
         })
         .catch(err => {
-            console.error("Error loading data:", err);
-            document.getElementById('body').innerHTML = "<tr><td colspan='4' class='empty-msg'>Error loading data.json. Check file format.</td></tr>";
+            document.getElementById('body').innerHTML = "<tr><td colspan='4' class='empty-msg'>Error loading data.json.</td></tr>";
         });
 </script>
 

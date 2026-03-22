@@ -35,17 +35,24 @@
     </div>
 
 <script>
-    // Načítáme data ze souboru data.json, který bude robot aktualizovat
     fetch('data.json')
         .then(response => response.json())
         .then(store => {
             const b = document.getElementById('body');
-            const sorted = Object.entries(store.players).sort((a, b) => b[1].b - a[1].b);
             
-            if (sorted.length === 0) {
-                b.innerHTML = "<tr><td colspan='4' style='text-align:center;padding:50px;'>Awaiting automated update...</td></tr>";
+            // Najdeme nejnovější sezónu (např. 2026-H1)
+            const availableSeasons = Object.keys(store.seasons || {}).sort().reverse();
+            
+            if (availableSeasons.length === 0) {
+                b.innerHTML = "<tr><td colspan='4' style='text-align:center;padding:50px;'>Awaiting automated season update...</td></tr>";
                 return;
             }
+
+            // Vybereme tu nejnovější (nebo můžeš natvrdo nastavit "2026-H1")
+            const activeSeason = availableSeasons[0]; 
+            const seasonData = store.seasons[activeSeason];
+            
+            const sorted = Object.entries(seasonData.players).sort((a, b) => b[1].b - a[1].b);
 
             sorted.forEach((h, i) => {
                 b.innerHTML += `

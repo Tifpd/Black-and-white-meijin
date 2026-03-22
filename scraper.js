@@ -7,41 +7,50 @@ const DATA_FILE = 'data.json';
 
 async function scrape() {
     try {
-        // 1. Načtení historie turnajů
-        const response = await axios.get(STAT_URL);
-        const $ = cheerio.load(response.data);
-        const store = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+        console.log("Fetching stats page...");
+        const response = await axios.get(STAT_URL, {
+            headers: { 'User-Agent': 'Mozilla/5.0' } // Předstíráme, že jsme prohlížeč
+        });
         
-        // Najdeme odkazy na turnaje (vypadají jako /en/tour.phtml?t=...)
+        const $ = cheerio.load(response.data);
+        let store = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+        if (!store.history) store = { players: {}, history: [] };
+
         const tourLinks = [];
-        $('a[href*="tour.phtml?t="]').each((i, el) => {
-            const id = $(el).attr('href').split('t=')[1];
-            if (!store.history.find(t => t.id == id)) {
-                tourLinks.push({ id: id, url: 'https://www.playok.com' + $(el).attr('href') });
+        // Hledáme všechny odkazy, které obsahují tour.phtml
+        $('a').each((i, el) => {
+            const href = $(el).attr('href');
+            if (href && href.includes('tour.phtml?t=')) {
+                const id = href.split('t=')[1].split('&')[0]; // Očistíme ID od případných dalších parametrů
+                if (!store.history.find(t => t.id == id)) {
+                    tourLinks.push({ id: id, url: 'https://www.playok.com' + (href.startsWith('/') ? href : '/' + href) });
+                }
             }
         });
 
+        console.log(`Detected unique tournament links: ${tourLinks.length}`);
+
         if (tourLinks.length === 0) {
-            console.log("No new tournaments found.");
+            console.log("No new or valid tournaments found. Check if the URL is correct or if Playok changed the layout.");
             return;
         }
 
-        console.log(`Found ${tourLinks.length} new tournaments. Processing...`);
-
-        // 2. Projdeme nové turnaje a stáhneme výsledky
-        for (const tour of tourLinks.reverse()) { // Od nejstaršího po nejnovější
-            const tRes = await axios.get(tour.url);
+        for (const tour of tourLinks.slice(0, 5)) { // Zkusíme nejdřív prvních 5 nejnovějších
+            console.log(`Processing tournament ID: ${tour.id}...`);
+            const tRes = await axios.get(tour.url, { headers: { 'User-Agent': 'Mozilla/5.0' } });
             const $t = cheerio.load(tRes.data);
             const players = [];
 
-            // Playok tabulka výsledků (často 4. nebo 5. tabulka na stránce)
-            $t('table.clmn tr').each((i, row) => {
+            // Playok tabulka výsledků - zkusíme najít jakoukoli tabulku s daty
+            $t('table tr').each((i, row) => {
                 const cells = $t(row).find('td');
-                if (cells.length >= 2) {
+                // Hledáme řádky, kde je v prvním sloupci číslo (pořadí) a ve druhém nick
+                if (cells.length >= 3) {
+                    const rankText = $t(cells[0]).text().trim();
                     const nick = $t(cells[1]).text().trim();
                     const score = parseFloat($t(cells[2]).text().replace(',', '.'));
                     
-                    if (nick && !isNaN(score) && nick.toLowerCase() !== 'bye') {
+                    if (rankText.match(/^\d+\.?$/) && nick && !isNaN(score) && nick.toLowerCase() !== 'bye') {
                         players.push({ nick: nick, body: score });
                     }
                 }
@@ -53,11 +62,13 @@ async function scrape() {
                     date: new Date().toLocaleDateString('en-GB'),
                     data: players
                 });
-                console.log(`Added tournament ${tour.id} with ${players.length} players.`);
+                console.log(`Successfully added ${players.length} players from tournament ${tour.id}`);
+            } else {
+                console.log(`Could not find player data in tournament ${tour.id}.`);
             }
         }
 
-        // 3. Přepočet celkového žebříčku
+        // Přepočet
         store.players = {};
         store.history.forEach(t => {
             t.data.forEach(p => {
@@ -68,10 +79,10 @@ async function scrape() {
         });
 
         fs.writeFileSync(DATA_FILE, JSON.stringify(store, null, 2));
-        console.log("Database updated successfully.");
+        console.log("All done!");
 
     } catch (error) {
-        console.error("Scraping failed:", error);
+        console.error("Scraping error:", error.message);
     }
 }
 

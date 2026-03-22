@@ -1,0 +1,32 @@
+name: Automated Playok Scraper
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Běží každou hodinu
+  workflow_dispatch: # Umožňuje spustit ručně tlačítkem
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm install axios cheerio
+
+      - name: Run scraper
+        run: node scraper.js
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "Meijin Bot"
+          git config --global user.email "bot@meijin.com"
+          git add data.json
+          git commit -m "Automated update: New tournament data" || exit 0
+          git push

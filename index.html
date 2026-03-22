@@ -4,25 +4,126 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Black and White Meijin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #ffffff; --text: #000000; --accent: #f5f5f5; }
-        body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 40px 10px; }
-        .container { max-width: 800px; margin: 0 auto; }
-        h1 { font-family: 'Cinzel', serif; text-align: center; font-size: 2.2em; letter-spacing: 6px; margin-bottom: 40px; text-transform: uppercase; border-bottom: 2px solid #000; padding-bottom: 20px; }
+        :root { 
+            --bg: #ffffff; 
+            --text: #1a1a1a; 
+            --accent: #f8f9fa; 
+            --border: #eeeeee;
+        }
         
-        #season-selector { text-align: center; margin-bottom: 30px; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
-        .season-btn { background: none; border: none; font-family: 'Cinzel', serif; cursor: pointer; font-size: 1em; padding: 8px 15px; transition: 0.3s; color: #000; border-bottom: 2px solid transparent; }
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background: var(--bg); 
+            color: var(--text); 
+            margin: 0; 
+            padding: 40px 15px; 
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { max-width: 850px; margin: 0 auto; }
+
+        /* Hlavní nadpis zůstává v Cinzel pro efekt */
+        h1 { 
+            font-family: 'Cinzel', serif; 
+            text-align: center; 
+            font-size: clamp(1.5em, 5vw, 2.5em); 
+            letter-spacing: 6px; 
+            margin-bottom: 50px; 
+            text-transform: uppercase; 
+            border-bottom: 2px solid #000; 
+            padding-bottom: 20px; 
+        }
         
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th { font-family: 'Cinzel', serif; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75em; padding: 12px; border-bottom: 1px solid #eee; color: #888; text-align: left; }
-        td { padding: 12px; border-bottom: 1px solid #fcfcfc; }
+        #season-selector { 
+            text-align: center; 
+            margin-bottom: 40px; 
+            display: flex; 
+            justify-content: center; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+        }
+
+        .season-btn { 
+            background: none; 
+            border: none; 
+            font-family: 'Cinzel', serif; 
+            cursor: pointer; 
+            font-size: 1.1em; 
+            padding: 5px 0; 
+            transition: 0.3s; 
+            color: #000; 
+            border-bottom: 2px solid transparent; 
+            opacity: 0.4;
+        }
+        
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 10px; 
+            background: #fff;
+        }
+
+        /* Záhlaví tabulky */
+        th { 
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            font-size: 0.75em; 
+            padding: 15px; 
+            border-bottom: 2px solid #000; 
+            color: #666; 
+            text-align: left; 
+        }
+
+        /* Buňky tabulky - Montserrat jasně ukazuje malá/velká písmena */
+        td { 
+            padding: 16px 15px; 
+            border-bottom: 1px solid var(--border); 
+            font-size: 0.95em;
+        }
+
         tr:hover { background: var(--accent); }
-        .rank { font-weight: bold; width: 40px; }
-        .nick { font-family: 'Cinzel', serif; font-weight: 700; color: #000; }
-        .score-cell { font-weight: bold; text-align: right; }
-        .participation { text-align: right; color: #aaa; font-size: 0.85em; }
-        .empty-msg { text-align: center; padding: 50px; color: #999; font-style: italic; }
+
+        .rank { 
+            font-weight: 400; 
+            color: #888; 
+            width: 50px; 
+        }
+
+        /* Nick hráče - Montserrat pro správné zobrazení case-sensitivity */
+        .nick { 
+            font-weight: 600; 
+            color: #000; 
+            letter-spacing: 0.2px;
+        }
+
+        .score-cell { 
+            font-weight: 600; 
+            text-align: right; 
+            font-variant-numeric: tabular-nums;
+        }
+
+        .participation { 
+            text-align: right; 
+            color: #999; 
+            font-size: 0.85em; 
+        }
+
+        .empty-msg { 
+            text-align: center; 
+            padding: 60px; 
+            color: #aaa; 
+            font-style: italic; 
+        }
+
+        /* Responzivní úprava pro mobily */
+        @media (max-width: 500px) {
+            td, th { padding: 12px 8px; font-size: 0.85em; }
+            h1 { letter-spacing: 3px; }
+        }
     </style>
 </head>
 <body>
@@ -38,7 +139,7 @@
                 <th>Rank</th>
                 <th>Player</th>
                 <th style="text-align: right;">Points</th>
-                <th style="text-align: right;">Tournaments</th>
+                <th style="text-align: right;">Games</th>
             </tr>
         </thead>
         <tbody id="body">
@@ -55,13 +156,13 @@
         
         const seasonData = globalStore.seasons[seasonKey];
         if (!seasonData || !seasonData.players || Object.keys(seasonData.players).length === 0) {
-            b.innerHTML = "<tr><td colspan='4' class='empty-msg'>No data for this season yet.</td></tr>";
+            b.innerHTML = "<tr><td colspan='4' class='empty-msg'>Zatím žádná data pro tuto sezónu.</td></tr>";
         } else {
             const sorted = Object.entries(seasonData.players).sort((a, b) => b[1].b - a[1].b);
             sorted.forEach((h, i) => {
                 b.innerHTML += `
                     <tr>
-                        <td class="rank">${i+1}.</td>
+                        <td class="rank">#${i+1}</td>
                         <td><span class="nick">${h[0]}</span></td>
                         <td class="score-cell">${h[1].b.toFixed(1)}</td>
                         <td class="participation">${h[1].u}</td>
@@ -69,16 +170,13 @@
             });
         }
 
-        // Vizuální označení aktivního tlačítka
         document.querySelectorAll('.season-btn').forEach(btn => {
             if (btn.innerText === seasonKey) {
                 btn.style.opacity = "1";
                 btn.style.borderBottom = "2px solid black";
-                btn.style.fontWeight = "bold";
             } else {
-                btn.style.opacity = "0.3";
+                btn.style.opacity = "0.4";
                 btn.style.borderBottom = "2px solid transparent";
-                btn.style.fontWeight = "normal";
             }
         });
     }
@@ -91,7 +189,7 @@
             const seasons = Object.keys(store.seasons || {}).sort().reverse();
 
             if (seasons.length === 0) {
-                document.getElementById('body').innerHTML = "<tr><td colspan='4' class='empty-msg'>Awaiting automated update...</td></tr>";
+                document.getElementById('body').innerHTML = "<tr><td colspan='4' class='empty-msg'>Čekám na aktualizaci dat...</td></tr>";
                 return;
             }
 
@@ -106,7 +204,7 @@
             switchSeason(seasons[0]);
         })
         .catch(err => {
-            document.getElementById('body').innerHTML = "<tr><td colspan='4' class='empty-msg'>Error loading data.json.</td></tr>";
+            document.getElementById('body').innerHTML = "<tr><td colspan='4' class='empty-msg'>Chyba při načítání data.json.</td></tr>";
         });
 </script>
 

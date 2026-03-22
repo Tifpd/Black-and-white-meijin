@@ -1,4 +1,208 @@
 {
-  "players": {},
-  "history": []
+  "players": {
+    "lvleijin": {
+      "b": 9,
+      "u": 2
+    },
+    "connect555": {
+      "b": 17,
+      "u": 4
+    },
+    "feniks112": {
+      "b": 7,
+      "u": 3
+    },
+    "kakosik": {
+      "b": 10,
+      "u": 5
+    },
+    "piotrek401": {
+      "b": 16,
+      "u": 5
+    },
+    "blackalleb": {
+      "b": 9,
+      "u": 4
+    },
+    "arsenipapell": {
+      "b": 7,
+      "u": 5
+    },
+    "puholek": {
+      "b": 4,
+      "u": 1
+    },
+    "markhorvath": {
+      "b": 5,
+      "u": 1
+    },
+    "minniemouse": {
+      "b": 2,
+      "u": 1
+    },
+    "uida0": {
+      "b": 2,
+      "u": 1
+    }
+  },
+  "history": [
+    {
+      "id": "9341590",
+      "date": "22/03/2026",
+      "data": [
+        {
+          "nick": "lvleijin",
+          "body": 6.5
+        },
+        {
+          "nick": "connect555",
+          "body": 5
+        },
+        {
+          "nick": "feniks112",
+          "body": 5
+        },
+        {
+          "nick": "kakosik",
+          "body": 3
+        },
+        {
+          "nick": "piotrek401",
+          "body": 3
+        },
+        {
+          "nick": "blackalleb",
+          "body": 3
+        },
+        {
+          "nick": "arsenipapell",
+          "body": 2.5
+        }
+      ]
+    },
+    {
+      "id": "9339446",
+      "date": "22/03/2026",
+      "data": [
+        {
+          "nick": "puholek",
+          "body": 4
+        },
+        {
+          "nick": "arsenipapell",
+          "body": 2
+        },
+        {
+          "nick": "kakosik",
+          "body": 2
+        },
+        {
+          "nick": "blackalleb",
+          "body": 2
+        },
+        {
+          "nick": "piotrek401",
+          "body": 2
+        }
+      ]
+    },
+    {
+      "id": "9337565",
+      "date": "22/03/2026",
+      "data": [
+        {
+          "nick": "markhorvath",
+          "body": 5
+        },
+        {
+          "nick": "connect555",
+          "body": 5
+        },
+        {
+          "nick": "piotrek401",
+          "body": 4
+        },
+        {
+          "nick": "lvleijin",
+          "body": 2.5
+        },
+        {
+          "nick": "minniemouse",
+          "body": 2
+        },
+        {
+          "nick": "uida0",
+          "body": 2
+        },
+        {
+          "nick": "kakosik",
+          "body": 2
+        },
+        {
+          "nick": "arsenipapell",
+          "body": 1.5
+        }
+      ]
+    },
+    {
+      "id": "9336041",
+      "date": "22/03/2026",
+      "data": [
+        {
+          "nick": "connect555",
+          "body": 5
+        },
+        {
+          "nick": "piotrek401",
+          "body": 4
+        },
+        {
+          "nick": "kakosik",
+          "body": 2
+        },
+        {
+          "nick": "blackalleb",
+          "body": 2
+        },
+        {
+          "nick": "feniks112",
+          "body": 1
+        },
+        {
+          "nick": "arsenipapell",
+          "body": 1
+        }
+      ]
+    },
+    {
+      "id": "9335100",
+      "date": "22/03/2026",
+      "data": [
+        {
+          "nick": "piotrek401",
+          "body": 3
+        },
+        {
+          "nick": "blackalleb",
+          "body": 2
+        },
+        {
+          "nick": "connect555",
+          "body": 2
+        },
+        {
+          "nick": "kakosik",
+          "body": 1
+        },
+        {
+          "nick": "feniks112",
+          "body": 1
+        },
+        {
+          "nick": "arsenipapell",
+          "body": 0
+        }
+      ]
+    }
+  ]
 }

@@ -2,20 +2,22 @@ name: Automated Playok Scraper
 
 on:
   schedule:
-    - cron: '0 * * * *' # Běží každou hodinu
-  workflow_dispatch: # Umožňuje spustit ručně tlačítkem
+    - cron: '0 * * * *'
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions: # Explicitní povolení zápisu přímo v kódu
+      contents: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 20
 
       - name: Install dependencies
         run: npm install axios cheerio

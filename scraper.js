@@ -7,13 +7,11 @@ const DATA_FILE = 'data.json';
 const SETTINGS_FILE = 'settings.json';
 const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
 
-// --- DATE FILTER ---
-// Bot ignores automatic tournaments older than this date
 const START_DATE_2026 = new Date('2026-01-01');
 
 async function scrape() {
     try {
-        console.log("--- STARTING SCRAPER WITH DISCORD & DATE FILTER ---");
+        console.log("--- STARTING SCRAPER (FIXED POINTS VERSION) ---");
         
         let store = { seasons: {} };
         if (fs.existsSync(DATA_FILE)) {
@@ -28,9 +26,9 @@ async function scrape() {
         }
 
         let potentialJobs = [];
-        let newlyProcessedJobs = []; // Track jobs added in this run for Discord
+        let newlyProcessedJobs = [];
 
-        // 1. Get IDs from Playok main stat page
+        // 1. Get tournament IDs from Playok
         const response = await axios.get(STAT_URL, { headers: { 'User-Agent': 'Mozilla/5.0' } });
         const $ = cheerio.load(response.data);
         $('a[href*="tour.phtml?t="]').each((i, el) => {
@@ -40,7 +38,7 @@ async function scrape() {
             }
         });
 
-        // 2. Add IDs from settings (if new)
+        // 2. Get IDs from manual settings
         for (let sKey in settings.manualAssignments) {
             settings.manualAssignments[sKey].forEach(id => {
                 if (!isAlreadyStored(store, id)) {
@@ -49,7 +47,7 @@ async function scrape() {
             });
         }
 
-        console.log(`Checking ${potentialJobs.length} tournaments...`);
+        console.log(`Checking ${potentialJobs.length} new tournaments...`);
 
         for (const job of potentialJobs) {
             try {
@@ -61,7 +59,6 @@ async function scrape() {
                 const dateMatch = infoText.match(/(\d{4})-(\d{2})-(\d{2})/);
                 
                 let targetSeason = "";
-                
                 if (job.type === 'manual') {
                     targetSeason = job.manualSeason;
                 } else if (dateMatch) {
@@ -70,28 +67,35 @@ async function scrape() {
                         const half = tourDate.getMonth() < 6 ? "H1" : "H2";
                         targetSeason = `${tourDate.getFullYear()}-${half}`;
                     } else {
-                        console.log(`Skipping old tournament ${job.id} from ${dateMatch[0]}`);
                         continue;
                     }
                 }
 
                 if (targetSeason) {
-                    console.log(`Saving tournament ${job.id} to ${targetSeason}`);
+                    console.log(`Processing tournament ${job.id} for ${targetSeason}`);
                     if (!store.seasons[targetSeason]) store.seasons[targetSeason] = { players: {}, history: [] };
                     
                     const players = [];
                     $t('table tr').each((i, row) => {
                         const cells = $t(row).find('td');
+                        
+                        // PlayOK Table structure: Rank (0), Nick (1), SIGMA Total Score (2)
                         if (cells.length >= 3) {
                             const rank = $t(cells[0]).text().trim();
                             const nick = $t(cells[1]).text().trim();
-                            const score = parseFloat($t(cells[2]).text().replace(',', '.'));
+                            const scoreText = $t(cells[2]).text().trim().replace(',', '.');
+                            const score = parseFloat(scoreText);
+
                             if (rank.match(/^\d+\.?$/) && nick && !isNaN(score) && nick.toLowerCase() !== 'bye') {
-                                players.push({ nick, body: score });
-                                let sP = store.seasons[targetSeason].players;
-                                if (!sP[nick]) sP[nick] = { b: 0, u: 0 };
-                                sP[nick].b += score;
-                                sP[nick].u += 1;
+                                // Double check if player is already in this specific tournament
+                                if (!players.find(p => p.nick === nick)) {
+                                    players.push({ nick, body: score });
+                                    
+                                    let sP = store.seasons[targetSeason].players;
+                                    if (!sP[nick]) sP[nick] = { b: 0, u: 0 };
+                                    sP[nick].b += score;
+                                    sP[nick].u += 1;
+                                }
                             }
                         }
                     });
@@ -101,20 +105,18 @@ async function scrape() {
                         newlyProcessedJobs.push({ id: job.id, season: targetSeason });
                     }
                 }
-                await new Promise(r => setTimeout(r, 600)); 
-            } catch (e) { console.log(`Error at ${job.id}: ${e.message}`); }
+                await new Promise(r => setTimeout(r, 1000)); // Be gentle to PlayOK
+            } catch (e) { console.log(`Error at tournament ${job.id}: ${e.message}`); }
         }
 
-        // Save data
         fs.writeFileSync(DATA_FILE, JSON.stringify(store, null, 2));
 
-        // Send Discord notifications for new tournaments
         if (newlyProcessedJobs.length > 0 && DISCORD_WEBHOOK_URL) {
             await sendDiscordNotification(newlyProcessedJobs, store);
         }
 
-        console.log("--- FINISHED ---");
-    } catch (e) { console.error(e.message); }
+        console.log("--- SCRAPE FINISHED ---");
+    } catch (e) { console.error("Critical Error:", e.message); }
 }
 
 async function sendDiscordNotification(jobs, store) {
@@ -123,7 +125,6 @@ async function sendDiscordNotification(jobs, store) {
         const tournament = seasonData.history.find(t => t.id === job.id);
         if (!tournament) continue;
 
-        // Sort players to get Top 3
         const topPlayers = [...tournament.data]
             .sort((a, b) => b.body - a.body)
             .slice(0, 3);

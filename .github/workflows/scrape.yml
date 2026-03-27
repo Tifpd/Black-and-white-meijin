@@ -2,13 +2,13 @@ name: Automated Playok Scraper
 
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '0 * * * *' # Běží každou hodinu
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions: # Explicitní povolení zápisu přímo v kódu
+    permissions:
       contents: write
     steps:
       - name: Checkout code
@@ -24,6 +24,9 @@ jobs:
 
       - name: Run scraper
         run: node scraper.js
+        env:
+          # TENTO ŘÁDEK JE KLÍČOVÝ PRO DISCORD:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
       - name: Commit and push changes
         run: |

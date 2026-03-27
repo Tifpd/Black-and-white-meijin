@@ -5,14 +5,15 @@ const fs = require('fs');
 const STAT_URL = 'https://www.playok.com/en/stat.phtml?u=gomokuworld&g=gm&sk=5';
 const DATA_FILE = 'data.json';
 const SETTINGS_FILE = 'settings.json';
+const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
 
-// --- FILTR PODLE DATA ---
-// Bot bude ignorovat automatické turnaje starší než toto datum
+// --- DATE FILTER ---
+// Bot ignores automatic tournaments older than this date
 const START_DATE_2026 = new Date('2026-01-01');
 
 async function scrape() {
     try {
-        console.log("--- START SCRAPERU S DATOVÝM FILTREM ---");
+        console.log("--- STARTING SCRAPER WITH DISCORD & DATE FILTER ---");
         
         let store = { seasons: {} };
         if (fs.existsSync(DATA_FILE)) {
@@ -26,10 +27,10 @@ async function scrape() {
             settings = JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8'));
         }
 
-        // Seznam všech ID k prověření (z Playoku i ze settings)
         let potentialJobs = [];
+        let newlyProcessedJobs = []; // Track jobs added in this run for Discord
 
-        // 1. Získáme ID z hlavní stránky Playoku
+        // 1. Get IDs from Playok main stat page
         const response = await axios.get(STAT_URL, { headers: { 'User-Agent': 'Mozilla/5.0' } });
         const $ = cheerio.load(response.data);
         $('a[href*="tour.phtml?t="]').each((i, el) => {
@@ -39,7 +40,7 @@ async function scrape() {
             }
         });
 
-        // 2. Přidáme ID ze settings (pokud tam jsou nová)
+        // 2. Add IDs from settings (if new)
         for (let sKey in settings.manualAssignments) {
             settings.manualAssignments[sKey].forEach(id => {
                 if (!isAlreadyStored(store, id)) {
@@ -48,7 +49,7 @@ async function scrape() {
             });
         }
 
-        console.log(`Prověřuji ${potentialJobs.length} turnajů...`);
+        console.log(`Checking ${potentialJobs.length} tournaments...`);
 
         for (const job of potentialJobs) {
             try {
@@ -56,18 +57,14 @@ async function scrape() {
                 const tRes = await axios.get(url, { headers: { 'User-Agent': 'Mozilla/5.0' } });
                 const $t = cheerio.load(tRes.data);
                 
-                // Získání data turnaje přímo z podstránky
-                // Playok obvykle píše datum v hlavičce tabulky nebo nad ní
                 const infoText = $t('td.p_lt').first().text() || $t('body').text();
                 const dateMatch = infoText.match(/(\d{4})-(\d{2})-(\d{2})/);
                 
                 let targetSeason = "";
                 
                 if (job.type === 'manual') {
-                    // Pokud je to ze settings, sezónu už známe
                     targetSeason = job.manualSeason;
                 } else if (dateMatch) {
-                    // Pokud je to automatika, zkontrolujeme datum
                     const tourDate = new Date(dateMatch[0]);
                     if (tourDate >= START_DATE_2026) {
                         const half = tourDate.getMonth() < 6 ? "H1" : "H2";
@@ -79,7 +76,7 @@ async function scrape() {
                 }
 
                 if (targetSeason) {
-                    console.log(`Ukládám turnaj ${job.id} do ${targetSeason}`);
+                    console.log(`Saving tournament ${job.id} to ${targetSeason}`);
                     if (!store.seasons[targetSeason]) store.seasons[targetSeason] = { players: {}, history: [] };
                     
                     const players = [];
@@ -101,15 +98,64 @@ async function scrape() {
 
                     if (players.length > 0) {
                         store.seasons[targetSeason].history.push({ id: job.id, data: players });
+                        newlyProcessedJobs.push({ id: job.id, season: targetSeason });
                     }
                 }
                 await new Promise(r => setTimeout(r, 600)); 
             } catch (e) { console.log(`Error at ${job.id}: ${e.message}`); }
         }
 
+        // Save data
         fs.writeFileSync(DATA_FILE, JSON.stringify(store, null, 2));
-        console.log("--- HOTOVO ---");
+
+        // Send Discord notifications for new tournaments
+        if (newlyProcessedJobs.length > 0 && DISCORD_WEBHOOK_URL) {
+            await sendDiscordNotification(newlyProcessedJobs, store);
+        }
+
+        console.log("--- FINISHED ---");
     } catch (e) { console.error(e.message); }
+}
+
+async function sendDiscordNotification(jobs, store) {
+    for (const job of jobs) {
+        const seasonData = store.seasons[job.season];
+        const tournament = seasonData.history.find(t => t.id === job.id);
+        if (!tournament) continue;
+
+        // Sort players to get Top 3
+        const topPlayers = [...tournament.data]
+            .sort((a, b) => b.body - a.body)
+            .slice(0, 3);
+
+        const seasonLabel = job.season.replace('H1', 'BM').replace('H2', 'WM');
+        const color = job.season.includes('H1') ? 0x1a1a1a : 0xb08d57;
+
+        const embed = {
+            title: `🏆 New Tournament Results: ${job.id}`,
+            description: `Season: **${seasonLabel}**`,
+            color: color,
+            fields: [
+                {
+                    name: "Top 3 Players",
+                    value: topPlayers.map((p, i) => `${i+1}. **${p.nick}** — ${p.body.toFixed(1)} pts`).join('\n')
+                },
+                {
+                    name: "Links",
+                    value: `[View Standings](https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPO_NAME/) | [PlayOK Results](https://www.playok.com/en/tour.phtml?t=${job.id})`
+                }
+            ],
+            footer: { text: "Black and White Meijin Series" },
+            timestamp: new Date().toISOString()
+        };
+
+        try {
+            await axios.post(DISCORD_WEBHOOK_URL, { embeds: [embed] });
+            console.log(`Discord notification sent for tournament ${job.id}`);
+        } catch (err) {
+            console.error("Discord webhook error:", err.response?.data || err.message);
+        }
+    }
 }
 
 function isAlreadyStored(store, id) {

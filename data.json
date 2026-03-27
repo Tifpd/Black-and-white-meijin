@@ -1,34 +1,37 @@
 {
   "seasons": {
+    "2026-H1": { "players": {}, "history": [] },
+    "2025-H2": { "players": {}, "history": [] },
+    "2025-H1": { "players": {}, "history": [] }
     "2026-H1": {
       "players": {
         "lvleijin": {
-          "b": 12,
-          "u": 3
+          "b": 9,
+          "u": 2
         },
         "connect555": {
-          "b": 55.5,
-          "u": 12
+          "b": 54,
+          "u": 11
         },
         "feniks112": {
-          "b": 20.5,
-          "u": 9
+          "b": 19,
+          "u": 8
         },
         "kakosik": {
-          "b": 27,
-          "u": 12
+          "b": 25,
+          "u": 11
         },
         "piotrek401": {
-          "b": 47.5,
-          "u": 13
+          "b": 45.5,
+          "u": 12
         },
         "blackalleb": {
           "b": 26.5,
-          "u": 11
+          "u": 10
         },
         "arsenipapell": {
-          "b": 21,
-          "u": 12
+          "b": 20,
+          "u": 11
         },
         "puholek": {
           "b": 17,
@@ -60,10 +63,6 @@
         },
         "monstr": {
           "b": 4,
-          "u": 1
-        },
-        "fh440": {
-          "b": 1,
           "u": 1
         }
       },
@@ -433,43 +432,6 @@
             {
               "nick": "gtlojza",
               "body": 1
-            }
-          ]
-        },
-        {
-          "id": "9341959",
-          "data": [
-            {
-              "nick": "lvleijin",
-              "body": 3
-            },
-            {
-              "nick": "kakosik",
-              "body": 2
-            },
-            {
-              "nick": "piotrek401",
-              "body": 2
-            },
-            {
-              "nick": "feniks112",
-              "body": 1.5
-            },
-            {
-              "nick": "connect555",
-              "body": 1.5
-            },
-            {
-              "nick": "arsenipapell",
-              "body": 1
-            },
-            {
-              "nick": "fh440",
-              "body": 1
-            },
-            {
-              "nick": "blackalleb",
-              "body": 0
             }
           ]
         }
@@ -1964,4 +1926,5 @@
       ]
     }
   }
+}
 }

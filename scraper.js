@@ -11,7 +11,7 @@ const START_DATE_2026 = new Date('2026-01-01');
 
 async function scrape() {
     try {
-        console.log("--- STARTING SCRAPER (FIXED POINTS VERSION) ---");
+        console.log("--- STARTING SCRAPER (FINAL VERSION) ---");
         
         let store = { seasons: {} };
         if (fs.existsSync(DATA_FILE)) {
@@ -28,7 +28,6 @@ async function scrape() {
         let potentialJobs = [];
         let newlyProcessedJobs = [];
 
-        // 1. Get tournament IDs from Playok
         const response = await axios.get(STAT_URL, { headers: { 'User-Agent': 'Mozilla/5.0' } });
         const $ = cheerio.load(response.data);
         $('a[href*="tour.phtml?t="]').each((i, el) => {
@@ -38,7 +37,6 @@ async function scrape() {
             }
         });
 
-        // 2. Get IDs from manual settings
         for (let sKey in settings.manualAssignments) {
             settings.manualAssignments[sKey].forEach(id => {
                 if (!isAlreadyStored(store, id)) {
@@ -78,8 +76,6 @@ async function scrape() {
                     const players = [];
                     $t('table tr').each((i, row) => {
                         const cells = $t(row).find('td');
-                        
-                        // PlayOK Table structure: Rank (0), Nick (1), SIGMA Total Score (2)
                         if (cells.length >= 3) {
                             const rank = $t(cells[0]).text().trim();
                             const nick = $t(cells[1]).text().trim();
@@ -87,7 +83,6 @@ async function scrape() {
                             const score = parseFloat(scoreText);
 
                             if (rank.match(/^\d+\.?$/) && nick && !isNaN(score) && nick.toLowerCase() !== 'bye') {
-                                // Double check if player is already in this specific tournament
                                 if (!players.find(p => p.nick === nick)) {
                                     players.push({ nick, body: score });
                                     
@@ -105,7 +100,7 @@ async function scrape() {
                         newlyProcessedJobs.push({ id: job.id, season: targetSeason });
                     }
                 }
-                await new Promise(r => setTimeout(r, 1000)); // Be gentle to PlayOK
+                await new Promise(r => setTimeout(r, 1000));
             } catch (e) { console.log(`Error at tournament ${job.id}: ${e.message}`); }
         }
 
@@ -143,7 +138,7 @@ async function sendDiscordNotification(jobs, store) {
                 },
                 {
                     name: "Links",
-                    value: `[View Standings](https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPO_NAME/) | [PlayOK Results](https://www.playok.com/en/tour.phtml?t=${job.id})`
+                    value: `[View Standings](https://tifpd.github.io/Black-and-white-meijin/) | [PlayOK Results](https://www.playok.com/en/tour.phtml?t=${job.id})`
                 }
             ],
             footer: { text: "Black and White Meijin Series" },

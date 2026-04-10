@@ -7,32 +7,32 @@
           "u": 3
         },
         "piotrek401": {
-          "b": 53,
-          "u": 14
+          "b": 57,
+          "u": 15
         },
         "kakosik": {
-          "b": 29,
-          "u": 13
+          "b": 32.5,
+          "u": 14
         },
         "connect555": {
-          "b": 57.5,
-          "u": 12
+          "b": 60.5,
+          "u": 13
         },
         "fh440": {
           "b": 3.5,
           "u": 1
         },
         "feniks112": {
-          "b": 24.5,
-          "u": 10
+          "b": 27.5,
+          "u": 11
         },
         "blackalleb": {
-          "b": 33.5,
-          "u": 12
+          "b": 37,
+          "u": 13
         },
         "arsenipapell": {
-          "b": 23,
-          "u": 13
+          "b": 26,
+          "u": 14
         },
         "puholek": {
           "b": 17,
@@ -67,8 +67,8 @@
           "u": 1
         },
         "setallar": {
-          "b": 4,
-          "u": 1
+          "b": 8,
+          "u": 2
         }
       },
       "history": [
@@ -503,6 +503,39 @@
             {
               "nick": "kakosik",
               "body": 0
+            }
+          ]
+        },
+        {
+          "id": "9344740",
+          "data": [
+            {
+              "nick": "setallar",
+              "body": 4
+            },
+            {
+              "nick": "piotrek401",
+              "body": 4
+            },
+            {
+              "nick": "blackalleb",
+              "body": 3.5
+            },
+            {
+              "nick": "kakosik",
+              "body": 3.5
+            },
+            {
+              "nick": "connect555",
+              "body": 3
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 3
+            },
+            {
+              "nick": "feniks112",
+              "body": 3
             }
           ]
         }

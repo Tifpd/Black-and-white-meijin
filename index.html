@@ -7,12 +7,33 @@
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 20px; line-height: 1.6; }
         .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1 { text-align: center; color: #1a1a1a; margin-bottom: 10px; }
+        h1 { text-align: center; color: #1a1a1a; margin-bottom: 20px; }
         
-        .scoring-info { background: #eef2ff; border-left: 5px solid #4f46e5; padding: 15px; margin: 20px 0; border-radius: 4px; font-size: 0.95em; }
+        /* Tournament Info Box */
+        .tournament-info {
+            text-align: center;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+        .tournament-info p { margin: 5px 0; }
+        .tournament-info a { color: #2563eb; text-decoration: none; font-weight: bold; }
+        .tournament-info a:hover { text-decoration: underline; }
+
+        /* Scoring Info Box */
+        .scoring-info { 
+            background: #eef2ff; 
+            border-left: 5px solid #4f46e5; 
+            padding: 15px; 
+            margin-bottom: 25px; 
+            border-radius: 4px; 
+            font-size: 0.95em; 
+        }
         .scoring-info strong { color: #4f46e5; }
 
-        select { width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 25px; cursor: pointer; }
+        select { width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 25px; cursor: pointer; background-color: #fff; }
         
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th { background-color: #f8fafc; color: #64748b; font-weight: 600; text-transform: uppercase; font-size: 0.85em; letter-spacing: 0.05em; }
@@ -31,6 +52,12 @@
 <div class="container">
     <h1>Black and White Meijin</h1>
     
+    <div class="tournament-info">
+        <p><strong>When:</strong> Every Friday at <strong>20:00 CET</strong></p>
+        <p><strong>Where:</strong> <a href="https://www.playok.com/en/gomoku/" target="_blank">PlayOK.com - Gomoku Room</a></p>
+        <p><strong>Format:</strong> Swap2, 5+2 (standard tournament settings)</p>
+    </div>
+
     <div class="scoring-info">
         <strong>Scoring System:</strong> Total Score = Tournament Points (TP) + Position Bonus (PB).<br>
         <em>Bonuses awarded per tournament: 1st: <strong>+9</strong>, 2nd: <strong>+5</strong>, 3rd: <strong>+3</strong>.</em>
@@ -56,7 +83,7 @@
             globalData = data;
             const select = document.getElementById('season-select');
             
-            // Step 3: Filter out 2025-H1 and sort seasons
+            // Filter out 2025-H1 and sort seasons descending
             const seasons = Object.keys(data.seasons)
                 .filter(s => s !== "2025-H1")
                 .sort((a, b) => b.localeCompare(a));
@@ -81,10 +108,10 @@
 
         const players = globalData.seasons[selectedSeason].players;
         
-        // Step 1: Sort by Total (b + bonus)
+        // Sort by Total Score (TP + Bonus)
         const sortedPlayers = Object.entries(players).sort((a, b) => {
-            const totalA = a[1].b + (a[1].bonus || 0);
-            const totalB = b[1].b + (b[1].bonus || 0);
+            const totalA = (a[1].b || 0) + (a[1].bonus || 0);
+            const totalB = (b[1].b || 0) + (b[1].bonus || 0);
             return totalB - totalA;
         });
 
@@ -103,15 +130,16 @@
         `;
 
         sortedPlayers.forEach(([nick, stats], index) => {
-            const total = stats.b + (stats.bonus || 0);
-            const bonus = stats.bonus || 0;
+            const tp = stats.b || 0;
+            const pb = stats.bonus || 0;
+            const total = tp + pb;
             
             html += `
                 <tr>
                     <td>${index + 1}.</td>
                     <td class="player-nick">${nick}</td>
                     <td class="total-cell"><strong>${total.toFixed(1)}</strong></td>
-                    <td class="split-points">${stats.b.toFixed(1)} <span style="color:#94a3b8">+</span> ${bonus}</td>
+                    <td class="split-points">${tp.toFixed(1)} <span style="color:#94a3b8">+</span> ${pb}</td>
                     <td>${stats.u}</td>
                 </tr>
             `;

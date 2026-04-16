@@ -11,7 +11,7 @@ const START_DATE_2026 = new Date('2026-01-01');
 
 async function scrape() {
     try {
-        console.log("--- STARTING SCRAPER (VERSION: TP + BONUS SEPARATION) ---");
+        console.log("--- STARTING SCRAPER (FINAL MINIMALIST VERSION) ---");
         
         let store = { seasons: {} };
         if (fs.existsSync(DATA_FILE)) {
@@ -28,7 +28,6 @@ async function scrape() {
         let potentialJobs = [];
         let newlyProcessedJobs = [];
 
-        // 1. Fetch tournament IDs
         const response = await axios.get(STAT_URL, { headers: { 'User-Agent': 'Mozilla/5.0' } });
         const $ = cheerio.load(response.data);
         $('a[href*="tour.phtml?t="]').each((i, el) => {
@@ -38,7 +37,6 @@ async function scrape() {
             }
         });
 
-        // 2. Fetch IDs from manual settings
         for (let sKey in settings.manualAssignments) {
             settings.manualAssignments[sKey].forEach(id => {
                 if (!isAlreadyStored(store, id)) {
@@ -46,8 +44,6 @@ async function scrape() {
                 }
             });
         }
-
-        console.log(`Checking ${potentialJobs.length} new tournaments...`);
 
         for (const job of potentialJobs) {
             try {
@@ -66,13 +62,10 @@ async function scrape() {
                     if (tourDate >= START_DATE_2026) {
                         const half = tourDate.getMonth() < 6 ? "H1" : "H2";
                         targetSeason = `${tourDate.getFullYear()}-${half}`;
-                    } else {
-                        continue;
-                    }
+                    } else continue;
                 }
 
                 if (targetSeason) {
-                    console.log(`Processing tournament ${job.id} for ${targetSeason}`);
                     if (!store.seasons[targetSeason]) store.seasons[targetSeason] = { players: {}, history: [] };
                     
                     let tournamentPlayers = [];
@@ -91,7 +84,6 @@ async function scrape() {
                         }
                     });
 
-                    // Sort players to define Top 3
                     tournamentPlayers.sort((a, b) => b.body - a.body);
 
                     tournamentPlayers.forEach((player, index) => {
@@ -103,9 +95,9 @@ async function scrape() {
                         let sP = store.seasons[targetSeason].players;
                         if (!sP[player.nick]) sP[player.nick] = { b: 0, bonus: 0, u: 0 };
                         
-                        sP[player.nick].b += player.body; // Store tournament points
-                        sP[player.nick].bonus += bonus;   // Store position bonuses
-                        sP[player.nick].u += 1;           // Update count of participations
+                        sP[player.nick].b += player.body;
+                        sP[player.nick].bonus += bonus;
+                        sP[player.nick].u += 1;
                     });
 
                     if (tournamentPlayers.length > 0) {
@@ -114,17 +106,15 @@ async function scrape() {
                     }
                 }
                 await new Promise(r => setTimeout(r, 1000));
-            } catch (e) { console.log(`Error at tournament ${job.id}: ${e.message}`); }
+            } catch (e) { console.log(`Error: ${e.message}`); }
         }
 
         fs.writeFileSync(DATA_FILE, JSON.stringify(store, null, 2));
 
-        if (false && newlyProcessedJobs.length > 0 && DISCORD_WEBHOOK_URL) {
+        if (newlyProcessedJobs.length > 0 && DISCORD_WEBHOOK_URL) {
             await sendDiscordNotification(newlyProcessedJobs, store);
         }
-
-        console.log("--- SCRAPE FINISHED ---");
-    } catch (e) { console.error("Critical Error:", e.message); }
+    } catch (e) { console.error("Error:", e.message); }
 }
 
 async function sendDiscordNotification(jobs, store) {
@@ -133,11 +123,8 @@ async function sendDiscordNotification(jobs, store) {
         const tournament = seasonData.history.find(t => t.id === job.id);
         if (!tournament) continue;
 
-        const topPlayers = [...tournament.data]
-            .sort((a, b) => b.body - a.body)
-            .slice(0, 3);
-
-        const seasonLabel = job.season.replace('H1', 'BM').replace('H2', 'WM');
+        const topPlayers = [...tournament.data].sort((a, b) => b.body - a.body).slice(0, 3);
+        const seasonLabel = job.season.includes('H1') ? job.season.replace('-H1', ' Black Meijin') : job.season.replace('-H2', ' White Meijin');
         const color = job.season.includes('H1') ? 0x1a1a1a : 0xb08d57;
 
         const embed = {
@@ -147,25 +134,18 @@ async function sendDiscordNotification(jobs, store) {
             fields: [
                 {
                     name: "Top 3 Players",
-                    value: topPlayers.map((p, i) => {
-                        const b = i === 0 ? 9 : (i === 1 ? 5 : 3);
-                        return `${i+1}. **${p.nick}** — ${p.body.toFixed(1)} TP (+${b} bonus)`;
-                    }).join('\n')
+                    value: topPlayers.map((p, i) => `${i+1}. **${p.nick}** — ${p.body.toFixed(1)} points`).join('\n')
                 },
                 {
                     name: "Links",
                     value: `[View Standings](https://tifpd.github.io/Black-and-white-meijin/) | [PlayOK Results](https://www.playok.com/en/tour.phtml?t=${job.id})`
                 }
-            ],
-            footer: { text: "Black and White Meijin Series" },
-            timestamp: new Date().toISOString()
+            ]
         };
 
         try {
             await axios.post(DISCORD_WEBHOOK_URL, { embeds: [embed] });
-        } catch (err) {
-            console.error("Discord error:", err.message);
-        }
+        } catch (err) { console.error("Discord error:", err.message); }
     }
 }
 

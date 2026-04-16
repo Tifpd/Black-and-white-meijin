@@ -11,7 +11,7 @@ const START_DATE_2026 = new Date('2026-01-01');
 
 async function scrape() {
     try {
-        console.log("--- STARTING SCRAPER (FINAL VERSION) ---");
+        console.log("--- STARTING SCRAPER (WITH POSITION BONUSES 9-5-3) ---");
         
         let store = { seasons: {} };
         if (fs.existsSync(DATA_FILE)) {
@@ -45,7 +45,7 @@ async function scrape() {
             });
         }
 
-        console.log(`Checking ${potentialJobs.length} new tournaments...`);
+        console.log(`Checking ${potentialJobs.length} tournaments...`);
 
         for (const job of potentialJobs) {
             try {
@@ -73,30 +73,43 @@ async function scrape() {
                     console.log(`Processing tournament ${job.id} for ${targetSeason}`);
                     if (!store.seasons[targetSeason]) store.seasons[targetSeason] = { players: {}, history: [] };
                     
-                    const players = [];
+                    let tournamentPlayers = [];
                     $t('table tr').each((i, row) => {
                         const cells = $t(row).find('td');
                         if (cells.length >= 3) {
                             const rank = $t(cells[0]).text().trim();
                             const nick = $t(cells[1]).text().trim();
-                            const scoreText = $t(cells[2]).text().trim().replace(',', '.');
-                            const score = parseFloat(scoreText);
+                            const score = parseFloat($t(cells[2]).text().trim().replace(',', '.'));
 
                             if (rank.match(/^\d+\.?$/) && nick && !isNaN(score) && nick.toLowerCase() !== 'bye') {
-                                if (!players.find(p => p.nick === nick)) {
-                                    players.push({ nick, body: score });
-                                    
-                                    let sP = store.seasons[targetSeason].players;
-                                    if (!sP[nick]) sP[nick] = { b: 0, u: 0 };
-                                    sP[nick].b += score;
-                                    sP[nick].u += 1;
+                                if (!tournamentPlayers.find(p => p.nick === nick)) {
+                                    tournamentPlayers.push({ nick, body: score });
                                 }
                             }
                         }
                     });
 
-                    if (players.length > 0) {
-                        store.seasons[targetSeason].history.push({ id: job.id, data: players });
+                    // --- CALCULATION OF BONUSES ---
+                    // Sort players by score to ensure correct top 3
+                    tournamentPlayers.sort((a, b) => b.body - a.body);
+
+                    tournamentPlayers.forEach((player, index) => {
+                        let bonus = 0;
+                        if (index === 0) bonus = 9;      // 1st place
+                        else if (index === 1) bonus = 5; // 2nd place
+                        else if (index === 2) bonus = 3; // 3rd place
+
+                        const totalWithBonus = player.body + bonus;
+
+                        let sP = store.seasons[targetSeason].players;
+                        if (!sP[player.nick]) sP[player.nick] = { b: 0, u: 0 };
+                        
+                        sP[player.nick].b += totalWithBonus;
+                        sP[player.nick].u += 1;
+                    });
+
+                    if (tournamentPlayers.length > 0) {
+                        store.seasons[targetSeason].history.push({ id: job.id, data: tournamentPlayers });
                         newlyProcessedJobs.push({ id: job.id, season: targetSeason });
                     }
                 }
@@ -106,7 +119,7 @@ async function scrape() {
 
         fs.writeFileSync(DATA_FILE, JSON.stringify(store, null, 2));
 
-        if (newlyProcessedJobs.length > 0 && DISCORD_WEBHOOK_URL) {
+        if (false && newlyProcessedJobs.length > 0 && DISCORD_WEBHOOK_URL) {
             await sendDiscordNotification(newlyProcessedJobs, store);
         }
 
@@ -133,8 +146,11 @@ async function sendDiscordNotification(jobs, store) {
             color: color,
             fields: [
                 {
-                    name: "Top 3 Players",
-                    value: topPlayers.map((p, i) => `${i+1}. **${p.nick}** — ${p.body.toFixed(1)} pts`).join('\n')
+                    name: "Top 3 (incl. bonuses +9, +5, +3)",
+                    value: topPlayers.map((p, i) => {
+                        const bonus = i === 0 ? 9 : (i === 1 ? 5 : 3);
+                        return `${i+1}. **${p.nick}** — ${(p.body + bonus).toFixed(1)} pts`;
+                    }).join('\n')
                 },
                 {
                     name: "Links",
@@ -147,9 +163,8 @@ async function sendDiscordNotification(jobs, store) {
 
         try {
             await axios.post(DISCORD_WEBHOOK_URL, { embeds: [embed] });
-            console.log(`Discord notification sent for tournament ${job.id}`);
         } catch (err) {
-            console.error("Discord webhook error:", err.response?.data || err.message);
+            console.error("Discord error:", err.message);
         }
     }
 }

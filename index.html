@@ -41,7 +41,7 @@
             font-size: 0.95em; 
         }
 
-        select { width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 25px; cursor: pointer; background-color: #fff; }
+        select { width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 25px; cursor: pointer; background-color: #fff; font-weight: 500; }
         
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th { background-color: #f8fafc; color: #64748b; font-weight: 600; text-transform: uppercase; font-size: 0.85em; letter-spacing: 0.05em; }
@@ -69,8 +69,8 @@
 
     <div class="rules-info">
         <strong>Championship Path:</strong><br>
-        • Winner of the 1st half (H1) becomes the <strong>Black Meijin</strong>.<br>
-        • Winner of the 2nd half (H2) becomes the <strong>White Meijin</strong>.<br>
+        • Winner of the first half of the year becomes the <strong>Black Meijin</strong>.<br>
+        • Winner of the second half of the year becomes the <strong>White Meijin</strong>.<br>
         • Both winners then face off in a grand final for the title of <strong>Black and White Meijin</strong>.
     </div>
 
@@ -91,6 +91,11 @@
 <script>
     let globalData = null;
 
+    // Helper function to format season names cleanly
+    function formatSeasonName(s) {
+        return s.includes('H1') ? s.replace('-H1', ' Black Meijin') : s.replace('-H2', ' White Meijin');
+    }
+
     fetch('data.json')
         .then(response => response.json())
         .then(data => {
@@ -104,8 +109,7 @@
             seasons.forEach(s => {
                 const option = document.createElement('option');
                 option.value = s;
-                const label = s.includes('H1') ? s.replace('-H1', ' Black Meijin (H1)') : s.replace('-H2', ' White Meijin (H2)');
-                option.textContent = label;
+                option.textContent = formatSeasonName(s);
                 select.appendChild(option);
             });
 

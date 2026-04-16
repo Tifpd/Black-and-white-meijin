@@ -3,245 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Black and White Meijin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Black and White Meijin Standings</title>
     <style>
-        :root { 
-            --bg: #ffffff; 
-            --text-main: #1a1a1a; 
-            --text-dim: #cccccc; 
-            --gold: #d4af37;
-            --silver: #a0a0a0;
-            --bronze: #cd7f32;
-            --border: #f2f2f2;
-            --accent-bm: #1a1a1a;
-            --accent-wm: #b08d57;
-        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 20px; line-height: 1.6; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #1a1a1a; margin-bottom: 10px; }
         
-        body { 
-            font-family: 'Montserrat', sans-serif; 
-            background: var(--bg); 
-            color: var(--text-main); 
-            margin: 0; 
-            padding: 40px 15px; 
-            -webkit-font-smoothing: antialiased;
-        }
+        .scoring-info { background: #eef2ff; border-left: 5px solid #4f46e5; padding: 15px; margin: 20px 0; border-radius: 4px; font-size: 0.95em; }
+        .scoring-info strong { color: #4f46e5; }
 
-        .container { max-width: 900px; margin: 0 auto; }
-
-        h1 { 
-            font-family: 'Cinzel', serif; 
-            text-align: center; 
-            font-size: 2.2em; 
-            letter-spacing: 8px; 
-            margin-bottom: 30px; 
-            text-transform: uppercase; 
-            border-bottom: 2px solid #f0f0f0; 
-            padding-bottom: 20px; 
-        }
-
-        /* --- INFO SECTION --- */
-        .info-toggle {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        #info-btn {
-            font-family: 'Cinzel', serif;
-            background: none;
-            border: 1px solid #eee;
-            padding: 8px 25px;
-            cursor: pointer;
-            font-size: 0.8em;
-            letter-spacing: 2px;
-            transition: 0.3s;
-            color: #888;
-            border-radius: 20px;
-        }
-
-        #info-btn:hover { background: #f9f9f9; color: #000; border-color: #000; }
-
-        #info-content {
-            display: none;
-            background: #fafafa;
-            padding: 30px;
-            border-radius: 10px;
-            margin-bottom: 40px;
-            line-height: 1.6;
-            font-size: 0.95em;
-            border: 1px solid #f0f0f0;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-        }
-
-        .info-box h3 {
-            font-family: 'Cinzel', serif;
-            font-size: 1em;
-            margin-top: 0;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 8px;
-            margin-bottom: 12px;
-        }
-
-        .info-box p { margin: 5px 0; color: #555; }
-        .highlight { color: #000; font-weight: 600; }
-
-        /* --- SEASON SELECTOR --- */
-        #season-selector { 
-            text-align: center; 
-            margin-bottom: 40px; 
-            display: flex; 
-            justify-content: center; 
-            gap: 25px; 
-            flex-wrap: wrap;
-        }
-
-        .season-btn { 
-            background: none; 
-            border: none; 
-            font-family: 'Cinzel', serif; 
-            cursor: pointer; 
-            font-size: 1.1em; 
-            padding: 8px 15px; 
-            opacity: 0.3;
-            transition: 0.3s;
-            border-bottom: 3px solid transparent;
-            font-weight: 700;
-        }
-
-        .btn-bm { color: var(--accent-bm); }
-        .btn-wm { color: var(--accent-wm); }
-        .season-btn.active.btn-bm { opacity: 1; border-bottom-color: var(--accent-bm); }
-        .season-btn.active.btn-wm { opacity: 1; border-bottom-color: var(--accent-wm); }
-
-        /* --- TABLE STYLE --- */
-        table { width: 100%; border-collapse: collapse; }
-        th { font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.7em; padding: 15px; color: var(--text-dim); text-align: left; border-bottom: 1px solid var(--border); }
-        td { padding: 22px 15px; border-bottom: 1px solid var(--border); font-size: 1.1em; }
+        select { width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 25px; cursor: pointer; }
         
-        .rank-cell { width: 60px; font-weight: 800; font-size: 1.4em; }
-        .rank-1 .rank-cell { color: var(--gold); }
-        .rank-2 .rank-cell { color: var(--silver); }
-        .rank-3 .rank-cell { color: var(--bronze); }
-        .rank-other .rank-cell { color: var(--text-dim); }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { background-color: #f8fafc; color: #64748b; font-weight: 600; text-transform: uppercase; font-size: 0.85em; letter-spacing: 0.05em; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        tr:hover { background-color: #f1f5f9; }
         
-        .nick { font-weight: 600; color: var(--text-main); }
-        .score-cell { font-weight: 700; text-align: right; font-size: 1.2em; }
-        .participation { text-align: right; color: var(--text-dim); font-size: 1.1em; width: 150px; }
-
-        @media (max-width: 650px) {
-            .info-grid { grid-template-columns: 1fr; }
-            td, th { padding: 15px 10px; font-size: 0.9em; }
-        }
+        .total-cell { color: #1a1a1a; font-size: 1.1em; }
+        .split-points { color: #64748b; font-size: 0.9em; }
+        .player-nick { font-weight: 600; color: #2563eb; }
+        
+        .footer { text-align: center; margin-top: 30px; font-size: 0.85em; color: #94a3b8; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Black and White Meijin</h1>
-
-    <div class="info-toggle">
-        <button id="info-btn" onclick="toggleInfo()">Tournament Info</button>
-    </div>
-
-    <div id="info-content">
-        <div class="info-grid">
-            <div class="info-box">
-                <h3>Rules & Format</h3>
-                <p>A regular series of online <span class="highlight">Gomoku</span> tournaments.</p>
-                <p>When: <span class="highlight">Every Friday 20:15</span> (Warsaw time)</p>
-                <p>Where: <a href="https://www.playok.com/" target="_blank" style="color: inherit;">PlayOK.com</a></p>
-                <p>Settings: <span class="highlight">9 rounds, 5 min + 3 s</span></p>
-            </div>
-            <div class="info-box">
-                <h3>League System</h3>
-                <p>1st Half: Fight for the <span class="highlight">Black Meijin (BM)</span> title.</p>
-                <p>2nd Half: Fight for the <span class="highlight">White Meijin (WM)</span> title.</p>
-                <p>The BM and WM winners will face off at the end of the year for the ultimate <span class="highlight">Black and White Meijin</span> title.</p>
-            </div>
-        </div>
-    </div>
     
-    <div id="season-selector"></div>
+    <div class="scoring-info">
+        <strong>Scoring System:</strong> Total Score = Tournament Points (TP) + Position Bonus (PB).<br>
+        <em>Bonuses awarded per tournament: 1st: <strong>+9</strong>, 2nd: <strong>+5</strong>, 3rd: <strong>+3</strong>.</em>
+    </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th class="rank-cell">RANK</th>
-                <th>PLAYER</th>
-                <th style="text-align: right;">POINTS</th>
-                <th style="text-align: right;">TOURNAMENTS</th>
-            </tr>
-        </thead>
-        <tbody id="body"></tbody>
-    </table>
+    <select id="season-select" onchange="loadSeasonData()"></select>
+    
+    <div id="table-container">
+        </div>
+
+    <div class="footer">
+        Automatically updated via GitHub Actions | Powered by PlayOK Data
+    </div>
 </div>
 
 <script>
-    let globalStore = {};
+    let globalData = null;
 
-    function toggleInfo() {
-        const content = document.getElementById('info-content');
-        const btn = document.getElementById('info-btn');
-        if (content.style.display === "block") {
-            content.style.display = "none";
-            btn.innerText = "Tournament Info";
-        } else {
-            content.style.display = "block";
-            btn.innerText = "Close Info";
-        }
-    }
+    // Load data.json
+    fetch('data.json')
+        .then(response => response.json())
+        .then(data => {
+            globalData = data;
+            const select = document.getElementById('season-select');
+            
+            // Step 3: Filter out 2025-H1 and sort seasons
+            const seasons = Object.keys(data.seasons)
+                .filter(s => s !== "2025-H1")
+                .sort((a, b) => b.localeCompare(a));
 
-    function formatSeasonName(key) {
-        const [year, half] = key.split('-');
-        return half === 'H1' ? `BM ${year}` : `WM ${year}`;
-    }
-
-    function switchSeason(seasonKey) {
-        const b = document.getElementById('body');
-        b.innerHTML = "";
-        const seasonData = globalStore.seasons[seasonKey];
-        if (!seasonData) return;
-
-        const sorted = Object.entries(seasonData.players).sort((a, b) => b[1].b - a[1].b);
-        sorted.forEach((h, i) => {
-            const rank = i + 1;
-            const rankClass = rank <= 3 ? `rank-${rank}` : 'rank-other';
-            b.innerHTML += `
-                <tr class="${rankClass}">
-                    <td class="rank-cell">${rank}.</td>
-                    <td><span class="nick">${h[0]}</span></td>
-                    <td class="score-cell">${h[1].b.toFixed(1)}</td>
-                    <td class="participation">${h[1].u}</td>
-                </tr>`;
-        });
-
-        document.querySelectorAll('.season-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.getAttribute('data-key') === seasonKey);
-        });
-    }
-
-    fetch('data.json?t=' + Date.now())
-        .then(r => r.json())
-        .then(store => {
-            globalStore = store;
-            const selector = document.getElementById('season-selector');
-            const seasons = Object.keys(store.seasons || {}).sort().reverse();
             seasons.forEach(s => {
-                const btn = document.createElement('button');
-                const isH1 = s.includes('H1');
-                btn.innerText = formatSeasonName(s);
-                btn.className = `season-btn ${isH1 ? 'btn-bm' : 'btn-wm'}`;
-                btn.setAttribute('data-key', s);
-                btn.onclick = () => switchSeason(s);
-                selector.appendChild(btn);
+                const option = document.createElement('option');
+                option.value = s;
+                // Format label: 2026-H1 -> 2026 Black Meijin (BM)
+                const label = s.includes('H1') ? s.replace('-H1', ' Black Meijin (BM)') : s.replace('-H2', ' White Meijin (WM)');
+                option.textContent = label;
+                select.appendChild(option);
             });
-            if (seasons.length > 0) switchSeason(seasons[0]);
+
+            if (seasons.length > 0) loadSeasonData();
         });
+
+    function loadSeasonData() {
+        const selectedSeason = document.getElementById('season-select').value;
+        const container = document.getElementById('table-container');
+        
+        if (!globalData || !globalData.seasons[selectedSeason]) return;
+
+        const players = globalData.seasons[selectedSeason].players;
+        
+        // Step 1: Sort by Total (b + bonus)
+        const sortedPlayers = Object.entries(players).sort((a, b) => {
+            const totalA = a[1].b + (a[1].bonus || 0);
+            const totalB = b[1].b + (b[1].bonus || 0);
+            return totalB - totalA;
+        });
+
+        let html = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th>Total Score</th>
+                        <th>TP + Bonus</th>
+                        <th>Played</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        sortedPlayers.forEach(([nick, stats], index) => {
+            const total = stats.b + (stats.bonus || 0);
+            const bonus = stats.bonus || 0;
+            
+            html += `
+                <tr>
+                    <td>${index + 1}.</td>
+                    <td class="player-nick">${nick}</td>
+                    <td class="total-cell"><strong>${total.toFixed(1)}</strong></td>
+                    <td class="split-points">${stats.b.toFixed(1)} <span style="color:#94a3b8">+</span> ${bonus}</td>
+                    <td>${stats.u}</td>
+                </tr>
+            `;
+        });
+
+        html += '</tbody></table>';
+        container.innerHTML = html;
+    }
 </script>
+
 </body>
 </html>

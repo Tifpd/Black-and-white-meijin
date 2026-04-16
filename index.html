@@ -11,16 +11,25 @@
         
         /* Tournament Info Box */
         .tournament-info {
-            text-align: center;
             background: #f8fafc;
             border: 1px solid #e2e8f0;
-            padding: 15px;
+            padding: 20px;
             margin-bottom: 15px;
             border-radius: 8px;
         }
-        .tournament-info p { margin: 5px 0; }
+        .tournament-info h2 { margin-top: 0; font-size: 1.2em; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
+        .tournament-info p { margin: 8px 0; }
         .tournament-info a { color: #2563eb; text-decoration: none; font-weight: bold; }
-        .tournament-info a:hover { text-decoration: underline; }
+        
+        /* Championship Rules Box */
+        .rules-info {
+            background: #fffbeb;
+            border-left: 5px solid #f59e0b;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
 
         /* Scoring Info Box */
         .scoring-info { 
@@ -31,7 +40,6 @@
             border-radius: 4px; 
             font-size: 0.95em; 
         }
-        .scoring-info strong { color: #4f46e5; }
 
         select { width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 25px; cursor: pointer; background-color: #fff; }
         
@@ -53,20 +61,27 @@
     <h1>Black and White Meijin</h1>
     
     <div class="tournament-info">
-        <p><strong>When:</strong> Every Friday at <strong>20:00 CET</strong></p>
-        <p><strong>Where:</strong> <a href="https://www.playok.com/en/gomoku/" target="_blank">PlayOK.com - Gomoku Room</a></p>
-        <p><strong>Format:</strong> Swap2, 5+2 (standard tournament settings)</p>
+        <h2>Tournament Details</h2>
+        <p><strong>When:</strong> Every Friday at <strong>20:15 CET</strong></p>
+        <p><strong>Where:</strong> <a href="https://www.playok.com/en/gomoku/" target="_blank">PlayOK.com</a> (Gomoku &rarr; Tournaments)</p>
+        <p><strong>Settings:</strong> Swap2, <strong>5 min + 3 sec</strong> increment, 9 rounds</p>
+    </div>
+
+    <div class="rules-info">
+        <strong>Championship Path:</strong><br>
+        • Winner of the 1st half (H1) becomes the <strong>Black Meijin</strong>.<br>
+        • Winner of the 2nd half (H2) becomes the <strong>White Meijin</strong>.<br>
+        • Both winners then face off in a grand final for the title of <strong>Black and White Meijin</strong>.
     </div>
 
     <div class="scoring-info">
         <strong>Scoring System:</strong> Total Score = Tournament Points (TP) + Position Bonus (PB).<br>
-        <em>Bonuses awarded per tournament: 1st: <strong>+9</strong>, 2nd: <strong>+5</strong>, 3rd: <strong>+3</strong>.</em>
+        <em>Bonuses: 1st place: <strong>+9</strong>, 2nd place: <strong>+5</strong>, 3rd place: <strong>+3</strong>.</em>
     </div>
 
     <select id="season-select" onchange="loadSeasonData()"></select>
     
-    <div id="table-container">
-        </div>
+    <div id="table-container"></div>
 
     <div class="footer">
         Automatically updated via GitHub Actions | Powered by PlayOK Data
@@ -76,14 +91,12 @@
 <script>
     let globalData = null;
 
-    // Load data.json
     fetch('data.json')
         .then(response => response.json())
         .then(data => {
             globalData = data;
             const select = document.getElementById('season-select');
             
-            // Filter out 2025-H1 and sort seasons descending
             const seasons = Object.keys(data.seasons)
                 .filter(s => s !== "2025-H1")
                 .sort((a, b) => b.localeCompare(a));
@@ -91,8 +104,7 @@
             seasons.forEach(s => {
                 const option = document.createElement('option');
                 option.value = s;
-                // Format label: 2026-H1 -> 2026 Black Meijin (BM)
-                const label = s.includes('H1') ? s.replace('-H1', ' Black Meijin (BM)') : s.replace('-H2', ' White Meijin (WM)');
+                const label = s.includes('H1') ? s.replace('-H1', ' Black Meijin (H1)') : s.replace('-H2', ' White Meijin (H2)');
                 option.textContent = label;
                 select.appendChild(option);
             });
@@ -108,7 +120,6 @@
 
         const players = globalData.seasons[selectedSeason].players;
         
-        // Sort by Total Score (TP + Bonus)
         const sortedPlayers = Object.entries(players).sort((a, b) => {
             const totalA = (a[1].b || 0) + (a[1].bonus || 0);
             const totalB = (b[1].b || 0) + (b[1].bonus || 0);

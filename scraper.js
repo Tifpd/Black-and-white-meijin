@@ -11,7 +11,7 @@ const START_DATE_2026 = new Date('2026-01-01');
 
 async function scrape() {
     try {
-        console.log("--- STARTING SCRAPER (WITH POSITION BONUSES 9-5-3) ---");
+        console.log("--- STARTING SCRAPER (VERSION: TP + BONUS SEPARATION) ---");
         
         let store = { seasons: {} };
         if (fs.existsSync(DATA_FILE)) {
@@ -28,6 +28,7 @@ async function scrape() {
         let potentialJobs = [];
         let newlyProcessedJobs = [];
 
+        // 1. Fetch tournament IDs
         const response = await axios.get(STAT_URL, { headers: { 'User-Agent': 'Mozilla/5.0' } });
         const $ = cheerio.load(response.data);
         $('a[href*="tour.phtml?t="]').each((i, el) => {
@@ -37,6 +38,7 @@ async function scrape() {
             }
         });
 
+        // 2. Fetch IDs from manual settings
         for (let sKey in settings.manualAssignments) {
             settings.manualAssignments[sKey].forEach(id => {
                 if (!isAlreadyStored(store, id)) {
@@ -45,7 +47,7 @@ async function scrape() {
             });
         }
 
-        console.log(`Checking ${potentialJobs.length} tournaments...`);
+        console.log(`Checking ${potentialJobs.length} new tournaments...`);
 
         for (const job of potentialJobs) {
             try {
@@ -89,23 +91,21 @@ async function scrape() {
                         }
                     });
 
-                    // --- CALCULATION OF BONUSES ---
-                    // Sort players by score to ensure correct top 3
+                    // Sort players to define Top 3
                     tournamentPlayers.sort((a, b) => b.body - a.body);
 
                     tournamentPlayers.forEach((player, index) => {
                         let bonus = 0;
-                        if (index === 0) bonus = 9;      // 1st place
-                        else if (index === 1) bonus = 5; // 2nd place
-                        else if (index === 2) bonus = 3; // 3rd place
-
-                        const totalWithBonus = player.body + bonus;
+                        if (index === 0) bonus = 9;
+                        else if (index === 1) bonus = 5;
+                        else if (index === 2) bonus = 3;
 
                         let sP = store.seasons[targetSeason].players;
-                        if (!sP[player.nick]) sP[player.nick] = { b: 0, u: 0 };
+                        if (!sP[player.nick]) sP[player.nick] = { b: 0, bonus: 0, u: 0 };
                         
-                        sP[player.nick].b += totalWithBonus;
-                        sP[player.nick].u += 1;
+                        sP[player.nick].b += player.body; // Store tournament points
+                        sP[player.nick].bonus += bonus;   // Store position bonuses
+                        sP[player.nick].u += 1;           // Update count of participations
                     });
 
                     if (tournamentPlayers.length > 0) {
@@ -141,15 +141,15 @@ async function sendDiscordNotification(jobs, store) {
         const color = job.season.includes('H1') ? 0x1a1a1a : 0xb08d57;
 
         const embed = {
-            title: `🏆 New Tournament Results: ${job.id}`,
+            title: `🏆 Tournament Results: ${job.id}`,
             description: `Season: **${seasonLabel}**`,
             color: color,
             fields: [
                 {
-                    name: "Top 3 (incl. bonuses +9, +5, +3)",
+                    name: "Top 3 Players",
                     value: topPlayers.map((p, i) => {
-                        const bonus = i === 0 ? 9 : (i === 1 ? 5 : 3);
-                        return `${i+1}. **${p.nick}** — ${(p.body + bonus).toFixed(1)} pts`;
+                        const b = i === 0 ? 9 : (i === 1 ? 5 : 3);
+                        return `${i+1}. **${p.nick}** — ${p.body.toFixed(1)} TP (+${b} bonus)`;
                     }).join('\n')
                 },
                 {

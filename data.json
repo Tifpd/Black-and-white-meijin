@@ -1,3 +1,1889 @@
 {
-  "seasons": {}
+  "seasons": {
+    "2026-H1": {
+      "players": {
+        "setallar": {
+          "b": 8,
+          "bonus": 18,
+          "u": 2
+        },
+        "piotrek401": {
+          "b": 57,
+          "bonus": 56,
+          "u": 15
+        },
+        "blackalleb": {
+          "b": 37,
+          "bonus": 24,
+          "u": 13
+        },
+        "kakosik": {
+          "b": 32.5,
+          "bonus": 12,
+          "u": 14
+        },
+        "connect555": {
+          "b": 60.5,
+          "bonus": 75,
+          "u": 13
+        },
+        "arsenipapell": {
+          "b": 26,
+          "bonus": 8,
+          "u": 14
+        },
+        "feniks112": {
+          "b": 27.5,
+          "bonus": 3,
+          "u": 11
+        },
+        "lvleijin": {
+          "b": 14,
+          "bonus": 18,
+          "u": 3
+        },
+        "fh440": {
+          "b": 3.5,
+          "bonus": 0,
+          "u": 1
+        },
+        "puholek": {
+          "b": 17,
+          "bonus": 23,
+          "u": 3
+        },
+        "markhorvath": {
+          "b": 5,
+          "bonus": 9,
+          "u": 1
+        },
+        "minniemouse": {
+          "b": 2,
+          "bonus": 0,
+          "u": 1
+        },
+        "uida0": {
+          "b": 2,
+          "bonus": 0,
+          "u": 1
+        },
+        "gtlojza": {
+          "b": 7,
+          "bonus": 9,
+          "u": 3
+        },
+        "tephro": {
+          "b": 1,
+          "bonus": 0,
+          "u": 1
+        },
+        "hajnal": {
+          "b": 2,
+          "bonus": 0,
+          "u": 1
+        },
+        "monstr": {
+          "b": 4,
+          "bonus": 0,
+          "u": 1
+        }
+      },
+      "history": [
+        {
+          "id": "9344740",
+          "data": [
+            {
+              "nick": "setallar",
+              "body": 4
+            },
+            {
+              "nick": "piotrek401",
+              "body": 4
+            },
+            {
+              "nick": "blackalleb",
+              "body": 3.5
+            },
+            {
+              "nick": "kakosik",
+              "body": 3.5
+            },
+            {
+              "nick": "connect555",
+              "body": 3
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 3
+            },
+            {
+              "nick": "feniks112",
+              "body": 3
+            }
+          ]
+        },
+        {
+          "id": "9343476",
+          "data": [
+            {
+              "nick": "setallar",
+              "body": 4
+            },
+            {
+              "nick": "blackalleb",
+              "body": 4
+            },
+            {
+              "nick": "piotrek401",
+              "body": 2.5
+            },
+            {
+              "nick": "feniks112",
+              "body": 2.5
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 2
+            },
+            {
+              "nick": "kakosik",
+              "body": 0
+            }
+          ]
+        },
+        {
+          "id": "9341959",
+          "data": [
+            {
+              "nick": "lvleijin",
+              "body": 5
+            },
+            {
+              "nick": "piotrek401",
+              "body": 5
+            },
+            {
+              "nick": "kakosik",
+              "body": 4
+            },
+            {
+              "nick": "connect555",
+              "body": 3.5
+            },
+            {
+              "nick": "fh440",
+              "body": 3.5
+            },
+            {
+              "nick": "feniks112",
+              "body": 3
+            },
+            {
+              "nick": "blackalleb",
+              "body": 3
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9341590",
+          "data": [
+            {
+              "nick": "lvleijin",
+              "body": 6.5
+            },
+            {
+              "nick": "connect555",
+              "body": 5
+            },
+            {
+              "nick": "feniks112",
+              "body": 5
+            },
+            {
+              "nick": "kakosik",
+              "body": 3
+            },
+            {
+              "nick": "piotrek401",
+              "body": 3
+            },
+            {
+              "nick": "blackalleb",
+              "body": 3
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 2.5
+            }
+          ]
+        },
+        {
+          "id": "9339446",
+          "data": [
+            {
+              "nick": "puholek",
+              "body": 4
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 2
+            },
+            {
+              "nick": "kakosik",
+              "body": 2
+            },
+            {
+              "nick": "blackalleb",
+              "body": 2
+            },
+            {
+              "nick": "piotrek401",
+              "body": 2
+            }
+          ]
+        },
+        {
+          "id": "9337565",
+          "data": [
+            {
+              "nick": "markhorvath",
+              "body": 5
+            },
+            {
+              "nick": "connect555",
+              "body": 5
+            },
+            {
+              "nick": "piotrek401",
+              "body": 4
+            },
+            {
+              "nick": "lvleijin",
+              "body": 2.5
+            },
+            {
+              "nick": "minniemouse",
+              "body": 2
+            },
+            {
+              "nick": "uida0",
+              "body": 2
+            },
+            {
+              "nick": "kakosik",
+              "body": 2
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 1.5
+            }
+          ]
+        },
+        {
+          "id": "9336041",
+          "data": [
+            {
+              "nick": "connect555",
+              "body": 5
+            },
+            {
+              "nick": "piotrek401",
+              "body": 4
+            },
+            {
+              "nick": "kakosik",
+              "body": 2
+            },
+            {
+              "nick": "blackalleb",
+              "body": 2
+            },
+            {
+              "nick": "feniks112",
+              "body": 1
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9335100",
+          "data": [
+            {
+              "nick": "piotrek401",
+              "body": 3
+            },
+            {
+              "nick": "blackalleb",
+              "body": 2
+            },
+            {
+              "nick": "connect555",
+              "body": 2
+            },
+            {
+              "nick": "kakosik",
+              "body": 1
+            },
+            {
+              "nick": "feniks112",
+              "body": 1
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 0
+            }
+          ]
+        },
+        {
+          "id": "9334529",
+          "data": [
+            {
+              "nick": "gtlojza",
+              "body": 4
+            },
+            {
+              "nick": "piotrek401",
+              "body": 4
+            },
+            {
+              "nick": "connect555",
+              "body": 4
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 1
+            },
+            {
+              "nick": "blackalleb",
+              "body": 1
+            },
+            {
+              "nick": "kakosik",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9332120",
+          "data": [
+            {
+              "nick": "connect555",
+              "body": 5
+            },
+            {
+              "nick": "blackalleb",
+              "body": 4
+            },
+            {
+              "nick": "piotrek401",
+              "body": 3
+            },
+            {
+              "nick": "tephro",
+              "body": 1
+            },
+            {
+              "nick": "kakosik",
+              "body": 1
+            },
+            {
+              "nick": "feniks112",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9331278",
+          "data": [
+            {
+              "nick": "connect555",
+              "body": 6
+            },
+            {
+              "nick": "puholek",
+              "body": 6
+            },
+            {
+              "nick": "blackalleb",
+              "body": 4.5
+            },
+            {
+              "nick": "piotrek401",
+              "body": 4
+            },
+            {
+              "nick": "kakosik",
+              "body": 4
+            },
+            {
+              "nick": "feniks112",
+              "body": 3.5
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 3
+            },
+            {
+              "nick": "gtlojza",
+              "body": 2
+            },
+            {
+              "nick": "hajnal",
+              "body": 2
+            }
+          ]
+        },
+        {
+          "id": "9329252",
+          "data": [
+            {
+              "nick": "connect555",
+              "body": 6
+            },
+            {
+              "nick": "piotrek401",
+              "body": 6
+            },
+            {
+              "nick": "blackalleb",
+              "body": 5
+            },
+            {
+              "nick": "monstr",
+              "body": 4
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 3
+            },
+            {
+              "nick": "feniks112",
+              "body": 2
+            },
+            {
+              "nick": "kakosik",
+              "body": 2
+            }
+          ]
+        },
+        {
+          "id": "9328315",
+          "data": [
+            {
+              "nick": "connect555",
+              "body": 5
+            },
+            {
+              "nick": "piotrek401",
+              "body": 4
+            },
+            {
+              "nick": "kakosik",
+              "body": 3
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 2
+            },
+            {
+              "nick": "blackalleb",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9325698",
+          "data": [
+            {
+              "nick": "puholek",
+              "body": 7
+            },
+            {
+              "nick": "connect555",
+              "body": 6
+            },
+            {
+              "nick": "piotrek401",
+              "body": 4.5
+            },
+            {
+              "nick": "kakosik",
+              "body": 4
+            },
+            {
+              "nick": "feniks112",
+              "body": 3.5
+            },
+            {
+              "nick": "blackalleb",
+              "body": 2
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9324273",
+          "data": [
+            {
+              "nick": "connect555",
+              "body": 5
+            },
+            {
+              "nick": "piotrek401",
+              "body": 4
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 3
+            },
+            {
+              "nick": "feniks112",
+              "body": 2
+            },
+            {
+              "nick": "gtlojza",
+              "body": 1
+            }
+          ]
+        }
+      ]
+    },
+    "2025-H2": {
+      "players": {
+        "klubkwidzyn": {
+          "b": 14,
+          "bonus": 18,
+          "u": 3
+        },
+        "connect555": {
+          "b": 96,
+          "bonus": 122,
+          "u": 23
+        },
+        "whitealleb": {
+          "b": 70,
+          "bonus": 48,
+          "u": 23
+        },
+        "kakosik": {
+          "b": 54.5,
+          "bonus": 32,
+          "u": 25
+        },
+        "piotrek401": {
+          "b": 75,
+          "bonus": 83,
+          "u": 22
+        },
+        "lvleijin": {
+          "b": 14.5,
+          "bonus": 14,
+          "u": 3
+        },
+        "feniks112": {
+          "b": 22.5,
+          "bonus": 13,
+          "u": 8
+        },
+        "puholek": {
+          "b": 17,
+          "bonus": 23,
+          "u": 4
+        },
+        "gtlojza": {
+          "b": 6.5,
+          "bonus": 0,
+          "u": 4
+        },
+        "lukrecja27": {
+          "b": 2,
+          "bonus": 0,
+          "u": 2
+        },
+        "peterthgreat": {
+          "b": 10,
+          "bonus": 10,
+          "u": 3
+        },
+        "quoraik": {
+          "b": 31.5,
+          "bonus": 33,
+          "u": 10
+        },
+        "arsenipapell": {
+          "b": 21.5,
+          "bonus": 11,
+          "u": 11
+        },
+        "turnirplay0k": {
+          "b": 9.5,
+          "bonus": 0,
+          "u": 3
+        },
+        "vladimirs": {
+          "b": 12,
+          "bonus": 3,
+          "u": 5
+        },
+        "petya": {
+          "b": 1,
+          "bonus": 0,
+          "u": 1
+        },
+        "standoku": {
+          "b": 2,
+          "bonus": 0,
+          "u": 1
+        },
+        "nyaaaaaaaaaam": {
+          "b": 7,
+          "bonus": 5,
+          "u": 1
+        },
+        "uida0": {
+          "b": 12,
+          "bonus": 5,
+          "u": 2
+        },
+        "pamp164": {
+          "b": 1.5,
+          "bonus": 0,
+          "u": 2
+        },
+        "monstr": {
+          "b": 3,
+          "bonus": 0,
+          "u": 1
+        },
+        "hjanryk": {
+          "b": 5,
+          "bonus": 5,
+          "u": 1
+        }
+      },
+      "history": [
+        {
+          "id": "9288187",
+          "data": [
+            {
+              "nick": "klubkwidzyn",
+              "body": 5
+            },
+            {
+              "nick": "connect555",
+              "body": 4.5
+            },
+            {
+              "nick": "whitealleb",
+              "body": 4.5
+            },
+            {
+              "nick": "kakosik",
+              "body": 3
+            },
+            {
+              "nick": "piotrek401",
+              "body": 3
+            },
+            {
+              "nick": "lvleijin",
+              "body": 3
+            },
+            {
+              "nick": "feniks112",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9288472",
+          "data": [
+            {
+              "nick": "puholek",
+              "body": 8
+            },
+            {
+              "nick": "lvleijin",
+              "body": 6.5
+            },
+            {
+              "nick": "feniks112",
+              "body": 5
+            },
+            {
+              "nick": "whitealleb",
+              "body": 5
+            },
+            {
+              "nick": "kakosik",
+              "body": 4.5
+            },
+            {
+              "nick": "piotrek401",
+              "body": 4
+            },
+            {
+              "nick": "connect555",
+              "body": 3.5
+            },
+            {
+              "nick": "gtlojza",
+              "body": 2.5
+            },
+            {
+              "nick": "lukrecja27",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9290009",
+          "data": [
+            {
+              "nick": "klubkwidzyn",
+              "body": 7
+            },
+            {
+              "nick": "puholek",
+              "body": 5
+            },
+            {
+              "nick": "connect555",
+              "body": 5
+            },
+            {
+              "nick": "kakosik",
+              "body": 3
+            },
+            {
+              "nick": "piotrek401",
+              "body": 3
+            },
+            {
+              "nick": "whitealleb",
+              "body": 3
+            },
+            {
+              "nick": "feniks112",
+              "body": 2
+            }
+          ]
+        },
+        {
+          "id": "9291383",
+          "data": [
+            {
+              "nick": "connect555",
+              "body": 4
+            },
+            {
+              "nick": "piotrek401",
+              "body": 3
+            },
+            {
+              "nick": "kakosik",
+              "body": 3
+            },
+            {
+              "nick": "klubkwidzyn",
+              "body": 2
+            },
+            {
+              "nick": "puholek",
+              "body": 2
+            },
+            {
+              "nick": "whitealleb",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9292410",
+          "data": [
+            {
+              "nick": "puholek",
+              "body": 2
+            },
+            {
+              "nick": "peterthgreat",
+              "body": 2
+            },
+            {
+              "nick": "connect555",
+              "body": 2
+            },
+            {
+              "nick": "kakosik",
+              "body": 0
+            }
+          ]
+        },
+        {
+          "id": "9294584",
+          "data": [
+            {
+              "nick": "connect555",
+              "body": 7
+            },
+            {
+              "nick": "peterthgreat",
+              "body": 5
+            },
+            {
+              "nick": "quoraik",
+              "body": 5
+            },
+            {
+              "nick": "whitealleb",
+              "body": 4
+            },
+            {
+              "nick": "piotrek401",
+              "body": 3
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 3
+            },
+            {
+              "nick": "kakosik",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9295858",
+          "data": [
+            {
+              "nick": "kakosik",
+              "body": 4
+            },
+            {
+              "nick": "connect555",
+              "body": 4
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 2.5
+            },
+            {
+              "nick": "quoraik",
+              "body": 2.5
+            },
+            {
+              "nick": "whitealleb",
+              "body": 2
+            }
+          ]
+        },
+        {
+          "id": "9297232",
+          "data": [
+            {
+              "nick": "piotrek401",
+              "body": 6
+            },
+            {
+              "nick": "quoraik",
+              "body": 5
+            },
+            {
+              "nick": "whitealleb",
+              "body": 5
+            },
+            {
+              "nick": "connect555",
+              "body": 5
+            },
+            {
+              "nick": "peterthgreat",
+              "body": 3
+            },
+            {
+              "nick": "gtlojza",
+              "body": 2
+            },
+            {
+              "nick": "kakosik",
+              "body": 2
+            }
+          ]
+        },
+        {
+          "id": "9297387",
+          "data": [
+            {
+              "nick": "kakosik",
+              "body": 3
+            },
+            {
+              "nick": "connect555",
+              "body": 2
+            },
+            {
+              "nick": "piotrek401",
+              "body": 1
+            },
+            {
+              "nick": "gtlojza",
+              "body": 1
+            },
+            {
+              "nick": "whitealleb",
+              "body": 1
+            },
+            {
+              "nick": "quoraik",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9299877",
+          "data": [
+            {
+              "nick": "quoraik",
+              "body": 5
+            },
+            {
+              "nick": "connect555",
+              "body": 5
+            },
+            {
+              "nick": "piotrek401",
+              "body": 4.5
+            },
+            {
+              "nick": "feniks112",
+              "body": 4
+            },
+            {
+              "nick": "kakosik",
+              "body": 3
+            },
+            {
+              "nick": "whitealleb",
+              "body": 3
+            },
+            {
+              "nick": "turnirplay0k",
+              "body": 2.5
+            },
+            {
+              "nick": "lukrecja27",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9301219",
+          "data": [
+            {
+              "nick": "piotrek401",
+              "body": 3
+            },
+            {
+              "nick": "connect555",
+              "body": 2
+            },
+            {
+              "nick": "quoraik",
+              "body": 1
+            },
+            {
+              "nick": "kakosik",
+              "body": 1
+            },
+            {
+              "nick": "whitealleb",
+              "body": 1
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9302016",
+          "data": [
+            {
+              "nick": "connect555",
+              "body": 4
+            },
+            {
+              "nick": "quoraik",
+              "body": 3
+            },
+            {
+              "nick": "vladimirs",
+              "body": 2
+            },
+            {
+              "nick": "kakosik",
+              "body": 1
+            },
+            {
+              "nick": "whitealleb",
+              "body": 1
+            },
+            {
+              "nick": "piotrek401",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9303315",
+          "data": [
+            {
+              "nick": "whitealleb",
+              "body": 3
+            },
+            {
+              "nick": "quoraik",
+              "body": 3
+            },
+            {
+              "nick": "piotrek401",
+              "body": 3
+            },
+            {
+              "nick": "connect555",
+              "body": 3
+            },
+            {
+              "nick": "kakosik",
+              "body": 2
+            },
+            {
+              "nick": "gtlojza",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9305335",
+          "data": [
+            {
+              "nick": "whitealleb",
+              "body": 4.5
+            },
+            {
+              "nick": "piotrek401",
+              "body": 4
+            },
+            {
+              "nick": "kakosik",
+              "body": 3.5
+            },
+            {
+              "nick": "quoraik",
+              "body": 2
+            },
+            {
+              "nick": "petya",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9306746",
+          "data": [
+            {
+              "nick": "piotrek401",
+              "body": 6
+            },
+            {
+              "nick": "connect555",
+              "body": 4.5
+            },
+            {
+              "nick": "quoraik",
+              "body": 4
+            },
+            {
+              "nick": "whitealleb",
+              "body": 3
+            },
+            {
+              "nick": "feniks112",
+              "body": 2.5
+            },
+            {
+              "nick": "vladimirs",
+              "body": 2
+            },
+            {
+              "nick": "kakosik",
+              "body": 2
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 0
+            }
+          ]
+        },
+        {
+          "id": "9308032",
+          "data": [
+            {
+              "nick": "connect555",
+              "body": 2.5
+            },
+            {
+              "nick": "feniks112",
+              "body": 2
+            },
+            {
+              "nick": "piotrek401",
+              "body": 1.5
+            },
+            {
+              "nick": "kakosik",
+              "body": 0
+            }
+          ]
+        },
+        {
+          "id": "9309640",
+          "data": [
+            {
+              "nick": "lvleijin",
+              "body": 5
+            },
+            {
+              "nick": "piotrek401",
+              "body": 4
+            },
+            {
+              "nick": "connect555",
+              "body": 4
+            },
+            {
+              "nick": "vladimirs",
+              "body": 3
+            },
+            {
+              "nick": "whitealleb",
+              "body": 3
+            },
+            {
+              "nick": "turnirplay0k",
+              "body": 2
+            },
+            {
+              "nick": "standoku",
+              "body": 2
+            },
+            {
+              "nick": "kakosik",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9311230",
+          "data": [
+            {
+              "nick": "piotrek401",
+              "body": 2.5
+            },
+            {
+              "nick": "kakosik",
+              "body": 1.5
+            },
+            {
+              "nick": "connect555",
+              "body": 1
+            },
+            {
+              "nick": "whitealleb",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9312440",
+          "data": [
+            {
+              "nick": "connect555",
+              "body": 8
+            },
+            {
+              "nick": "nyaaaaaaaaaam",
+              "body": 7
+            },
+            {
+              "nick": "whitealleb",
+              "body": 6
+            },
+            {
+              "nick": "uida0",
+              "body": 6
+            },
+            {
+              "nick": "turnirplay0k",
+              "body": 5
+            },
+            {
+              "nick": "piotrek401",
+              "body": 4.5
+            },
+            {
+              "nick": "kakosik",
+              "body": 4
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 3
+            },
+            {
+              "nick": "pamp164",
+              "body": 1.5
+            }
+          ]
+        },
+        {
+          "id": "9315835",
+          "data": [
+            {
+              "nick": "whitealleb",
+              "body": 3
+            },
+            {
+              "nick": "piotrek401",
+              "body": 1
+            },
+            {
+              "nick": "kakosik",
+              "body": 1
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9316051",
+          "data": [
+            {
+              "nick": "piotrek401",
+              "body": 7
+            },
+            {
+              "nick": "uida0",
+              "body": 6
+            },
+            {
+              "nick": "connect555",
+              "body": 5
+            },
+            {
+              "nick": "whitealleb",
+              "body": 3
+            },
+            {
+              "nick": "kakosik",
+              "body": 3
+            },
+            {
+              "nick": "vladimirs",
+              "body": 2
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 2
+            },
+            {
+              "nick": "pamp164",
+              "body": 0
+            }
+          ]
+        },
+        {
+          "id": "9318901",
+          "data": [
+            {
+              "nick": "whitealleb",
+              "body": 5
+            },
+            {
+              "nick": "connect555",
+              "body": 4
+            },
+            {
+              "nick": "piotrek401",
+              "body": 2
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 2
+            },
+            {
+              "nick": "kakosik",
+              "body": 2
+            }
+          ]
+        },
+        {
+          "id": "9319484",
+          "data": [
+            {
+              "nick": "connect555",
+              "body": 7
+            },
+            {
+              "nick": "feniks112",
+              "body": 4
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 3
+            },
+            {
+              "nick": "kakosik",
+              "body": 3
+            },
+            {
+              "nick": "vladimirs",
+              "body": 3
+            },
+            {
+              "nick": "piotrek401",
+              "body": 3
+            },
+            {
+              "nick": "monstr",
+              "body": 3
+            },
+            {
+              "nick": "whitealleb",
+              "body": 2
+            }
+          ]
+        },
+        {
+          "id": "9321326",
+          "data": [
+            {
+              "nick": "connect555",
+              "body": 3
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 2
+            },
+            {
+              "nick": "whitealleb",
+              "body": 1
+            },
+            {
+              "nick": "kakosik",
+              "body": 0
+            }
+          ]
+        },
+        {
+          "id": "9322059",
+          "data": [
+            {
+              "nick": "connect555",
+              "body": 6
+            },
+            {
+              "nick": "hjanryk",
+              "body": 5
+            },
+            {
+              "nick": "piotrek401",
+              "body": 5
+            },
+            {
+              "nick": "whitealleb",
+              "body": 5
+            },
+            {
+              "nick": "kakosik",
+              "body": 3
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 2
+            },
+            {
+              "nick": "feniks112",
+              "body": 2
+            }
+          ]
+        }
+      ]
+    },
+    "2025-H1": {
+      "players": {
+        "gardoson": {
+          "b": 8,
+          "bonus": 9,
+          "u": 1
+        },
+        "piotrek401": {
+          "b": 43.5,
+          "bonus": 31,
+          "u": 11
+        },
+        "puholek": {
+          "b": 39,
+          "bonus": 38,
+          "u": 8
+        },
+        "blackalleb": {
+          "b": 40.5,
+          "bonus": 27,
+          "u": 11
+        },
+        "connect555": {
+          "b": 45.5,
+          "bonus": 44,
+          "u": 9
+        },
+        "vladimirs": {
+          "b": 15.5,
+          "bonus": 5,
+          "u": 6
+        },
+        "arsenipapell": {
+          "b": 7,
+          "bonus": 0,
+          "u": 3
+        },
+        "isaacofuluru": {
+          "b": 10,
+          "bonus": 0,
+          "u": 3
+        },
+        "kakosik": {
+          "b": 20.5,
+          "bonus": 0,
+          "u": 11
+        },
+        "feniks112": {
+          "b": 25,
+          "bonus": 18,
+          "u": 10
+        },
+        "supersonic1": {
+          "b": 11.5,
+          "bonus": 9,
+          "u": 2
+        },
+        "gtlojza": {
+          "b": 7,
+          "bonus": 3,
+          "u": 6
+        },
+        "lvleijin": {
+          "b": 5,
+          "bonus": 3,
+          "u": 1
+        }
+      },
+      "history": [
+        {
+          "id": "9271404",
+          "data": [
+            {
+              "nick": "gardoson",
+              "body": 8
+            },
+            {
+              "nick": "piotrek401",
+              "body": 7
+            },
+            {
+              "nick": "puholek",
+              "body": 6
+            },
+            {
+              "nick": "blackalleb",
+              "body": 5.5
+            },
+            {
+              "nick": "connect555",
+              "body": 5.5
+            },
+            {
+              "nick": "vladimirs",
+              "body": 4
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 3.5
+            },
+            {
+              "nick": "isaacofuluru",
+              "body": 3
+            },
+            {
+              "nick": "kakosik",
+              "body": 2.5
+            },
+            {
+              "nick": "feniks112",
+              "body": 0
+            }
+          ]
+        },
+        {
+          "id": "9272481",
+          "data": [
+            {
+              "nick": "connect555",
+              "body": 7
+            },
+            {
+              "nick": "piotrek401",
+              "body": 7
+            },
+            {
+              "nick": "puholek",
+              "body": 7
+            },
+            {
+              "nick": "supersonic1",
+              "body": 6.5
+            },
+            {
+              "nick": "isaacofuluru",
+              "body": 5
+            },
+            {
+              "nick": "vladimirs",
+              "body": 4
+            },
+            {
+              "nick": "blackalleb",
+              "body": 4
+            },
+            {
+              "nick": "kakosik",
+              "body": 3.5
+            },
+            {
+              "nick": "gtlojza",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9274553",
+          "data": [
+            {
+              "nick": "connect555",
+              "body": 7
+            },
+            {
+              "nick": "puholek",
+              "body": 5
+            },
+            {
+              "nick": "piotrek401",
+              "body": 4
+            },
+            {
+              "nick": "blackalleb",
+              "body": 4
+            },
+            {
+              "nick": "kakosik",
+              "body": 4
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 2
+            },
+            {
+              "nick": "feniks112",
+              "body": 2
+            },
+            {
+              "nick": "vladimirs",
+              "body": 0
+            }
+          ]
+        },
+        {
+          "id": "9276398",
+          "data": [
+            {
+              "nick": "blackalleb",
+              "body": 7
+            },
+            {
+              "nick": "piotrek401",
+              "body": 5
+            },
+            {
+              "nick": "feniks112",
+              "body": 5
+            },
+            {
+              "nick": "puholek",
+              "body": 4
+            },
+            {
+              "nick": "connect555",
+              "body": 3
+            },
+            {
+              "nick": "isaacofuluru",
+              "body": 2
+            },
+            {
+              "nick": "kakosik",
+              "body": 2
+            },
+            {
+              "nick": "gtlojza",
+              "body": 0
+            }
+          ]
+        },
+        {
+          "id": "9277605",
+          "data": [
+            {
+              "nick": "supersonic1",
+              "body": 5
+            },
+            {
+              "nick": "piotrek401",
+              "body": 4
+            },
+            {
+              "nick": "feniks112",
+              "body": 2
+            },
+            {
+              "nick": "puholek",
+              "body": 2
+            },
+            {
+              "nick": "kakosik",
+              "body": 1
+            },
+            {
+              "nick": "blackalleb",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9279173",
+          "data": [
+            {
+              "nick": "connect555",
+              "body": 5
+            },
+            {
+              "nick": "piotrek401",
+              "body": 3
+            },
+            {
+              "nick": "blackalleb",
+              "body": 3
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 1.5
+            },
+            {
+              "nick": "kakosik",
+              "body": 1.5
+            },
+            {
+              "nick": "feniks112",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9281319",
+          "data": [
+            {
+              "nick": "puholek",
+              "body": 5
+            },
+            {
+              "nick": "blackalleb",
+              "body": 3
+            },
+            {
+              "nick": "gtlojza",
+              "body": 3
+            },
+            {
+              "nick": "connect555",
+              "body": 3
+            },
+            {
+              "nick": "feniks112",
+              "body": 2
+            },
+            {
+              "nick": "piotrek401",
+              "body": 2
+            },
+            {
+              "nick": "vladimirs",
+              "body": 1
+            },
+            {
+              "nick": "kakosik",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9282765",
+          "data": [
+            {
+              "nick": "feniks112",
+              "body": 5
+            },
+            {
+              "nick": "vladimirs",
+              "body": 4.5
+            },
+            {
+              "nick": "connect555",
+              "body": 4.5
+            },
+            {
+              "nick": "blackalleb",
+              "body": 3
+            },
+            {
+              "nick": "piotrek401",
+              "body": 3
+            },
+            {
+              "nick": "kakosik",
+              "body": 2
+            },
+            {
+              "nick": "gtlojza",
+              "body": 2
+            }
+          ]
+        },
+        {
+          "id": "9283799",
+          "data": [
+            {
+              "nick": "puholek",
+              "body": 4
+            },
+            {
+              "nick": "blackalleb",
+              "body": 4
+            },
+            {
+              "nick": "feniks112",
+              "body": 3
+            },
+            {
+              "nick": "piotrek401",
+              "body": 3
+            },
+            {
+              "nick": "gtlojza",
+              "body": 1
+            },
+            {
+              "nick": "kakosik",
+              "body": 0
+            }
+          ]
+        },
+        {
+          "id": "9284795",
+          "data": [
+            {
+              "nick": "puholek",
+              "body": 6
+            },
+            {
+              "nick": "connect555",
+              "body": 5.5
+            },
+            {
+              "nick": "lvleijin",
+              "body": 5
+            },
+            {
+              "nick": "feniks112",
+              "body": 3
+            },
+            {
+              "nick": "piotrek401",
+              "body": 2.5
+            },
+            {
+              "nick": "kakosik",
+              "body": 2
+            },
+            {
+              "nick": "blackalleb",
+              "body": 2
+            },
+            {
+              "nick": "vladimirs",
+              "body": 2
+            }
+          ]
+        },
+        {
+          "id": "9286774",
+          "data": [
+            {
+              "nick": "connect555",
+              "body": 5
+            },
+            {
+              "nick": "blackalleb",
+              "body": 4
+            },
+            {
+              "nick": "piotrek401",
+              "body": 3
+            },
+            {
+              "nick": "feniks112",
+              "body": 2
+            },
+            {
+              "nick": "kakosik",
+              "body": 1
+            },
+            {
+              "nick": "gtlojza",
+              "body": 0
+            }
+          ]
+        }
+      ]
+    }
+  }
 }

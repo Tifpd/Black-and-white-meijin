@@ -8,24 +8,24 @@
           "u": 2
         },
         "piotrek401": {
-          "b": 57,
-          "bonus": 56,
-          "u": 15
+          "b": 60,
+          "bonus": 59,
+          "u": 16
         },
         "blackalleb": {
-          "b": 37,
+          "b": 39,
           "bonus": 24,
-          "u": 13
-        },
-        "kakosik": {
-          "b": 32.5,
-          "bonus": 12,
           "u": 14
         },
+        "kakosik": {
+          "b": 34,
+          "bonus": 12,
+          "u": 15
+        },
         "connect555": {
-          "b": 60.5,
-          "bonus": 75,
-          "u": 13
+          "b": 65.5,
+          "bonus": 84,
+          "u": 14
         },
         "arsenipapell": {
           "b": 26,
@@ -33,9 +33,9 @@
           "u": 14
         },
         "feniks112": {
-          "b": 27.5,
-          "bonus": 3,
-          "u": 11
+          "b": 31,
+          "bonus": 8,
+          "u": 12
         },
         "lvleijin": {
           "b": 14,
@@ -553,6 +553,31 @@
             {
               "nick": "gtlojza",
               "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9347259",
+          "data": [
+            {
+              "nick": "connect555",
+              "body": 5
+            },
+            {
+              "nick": "feniks112",
+              "body": 3.5
+            },
+            {
+              "nick": "piotrek401",
+              "body": 3
+            },
+            {
+              "nick": "blackalleb",
+              "body": 2
+            },
+            {
+              "nick": "kakosik",
+              "body": 1.5
             }
           ]
         }

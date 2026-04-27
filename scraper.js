@@ -11,7 +11,7 @@ const START_DATE_2026 = new Date('2026-01-01');
 
 async function scrape() {
     try {
-        console.log("--- STARTING SCRAPER (FINAL MINIMALIST VERSION) ---");
+        console.log("--- STARTING SCRAPER (FIXED BYE HANDLING) ---");
         
         let store = { seasons: {} };
         if (fs.existsSync(DATA_FILE)) {
@@ -28,6 +28,7 @@ async function scrape() {
         let potentialJobs = [];
         let newlyProcessedJobs = [];
 
+        // 1. Fetch tournament IDs
         const response = await axios.get(STAT_URL, { headers: { 'User-Agent': 'Mozilla/5.0' } });
         const $ = cheerio.load(response.data);
         $('a[href*="tour.phtml?t="]').each((i, el) => {
@@ -37,6 +38,7 @@ async function scrape() {
             }
         });
 
+        // 2. Fetch IDs from manual settings
         for (let sKey in settings.manualAssignments) {
             settings.manualAssignments[sKey].forEach(id => {
                 if (!isAlreadyStored(store, id)) {
@@ -44,6 +46,8 @@ async function scrape() {
                 }
             });
         }
+
+        console.log(`Checking ${potentialJobs.length} new tournaments...`);
 
         for (const job of potentialJobs) {
             try {
@@ -66,15 +70,18 @@ async function scrape() {
                 }
 
                 if (targetSeason) {
+                    console.log(`Processing tournament ${job.id} for ${targetSeason}`);
                     if (!store.seasons[targetSeason]) store.seasons[targetSeason] = { players: {}, history: [] };
                     
                     let tournamentPlayers = [];
+                    // FIXED: Reading the third column (Score) directly to handle 'bye' correctly
                     $t('table tr').each((i, row) => {
                         const cells = $t(row).find('td');
                         if (cells.length >= 3) {
                             const rank = $t(cells[0]).text().trim();
                             const nick = $t(cells[1]).text().trim();
-                            const score = parseFloat($t(cells[2]).text().trim().replace(',', '.'));
+                            const scoreText = $t(cells[2]).text().trim().replace(',', '.');
+                            const score = parseFloat(scoreText);
 
                             if (rank.match(/^\d+\.?$/) && nick && !isNaN(score) && nick.toLowerCase() !== 'bye') {
                                 if (!tournamentPlayers.find(p => p.nick === nick)) {
@@ -106,7 +113,7 @@ async function scrape() {
                     }
                 }
                 await new Promise(r => setTimeout(r, 1000));
-            } catch (e) { console.log(`Error: ${e.message}`); }
+            } catch (e) { console.log(`Error at tournament ${job.id}: ${e.message}`); }
         }
 
         fs.writeFileSync(DATA_FILE, JSON.stringify(store, null, 2));
@@ -114,7 +121,9 @@ async function scrape() {
         if (newlyProcessedJobs.length > 0 && DISCORD_WEBHOOK_URL) {
             await sendDiscordNotification(newlyProcessedJobs, store);
         }
-    } catch (e) { console.error("Error:", e.message); }
+
+        console.log("--- SCRAPE FINISHED ---");
+    } catch (e) { console.error("Critical Error:", e.message); }
 }
 
 async function sendDiscordNotification(jobs, store) {
@@ -124,7 +133,10 @@ async function sendDiscordNotification(jobs, store) {
         if (!tournament) continue;
 
         const topPlayers = [...tournament.data].sort((a, b) => b.body - a.body).slice(0, 3);
-        const seasonLabel = job.season.includes('H1') ? job.season.replace('-H1', ' Black Meijin') : job.season.replace('-H2', ' White Meijin');
+        const seasonLabel = job.season.includes('H1') 
+            ? job.season.replace('-H1', ' Black Meijin') 
+            : job.season.replace('-H2', ' White Meijin');
+            
         const color = job.season.includes('H1') ? 0x1a1a1a : 0xb08d57;
 
         const embed = {
@@ -145,7 +157,9 @@ async function sendDiscordNotification(jobs, store) {
 
         try {
             await axios.post(DISCORD_WEBHOOK_URL, { embeds: [embed] });
-        } catch (err) { console.error("Discord error:", err.message); }
+        } catch (err) {
+            console.error("Discord error:", err.message);
+        }
     }
 }
 

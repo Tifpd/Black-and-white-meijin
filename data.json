@@ -3,19 +3,19 @@
     "2026-H1": {
       "players": {
         "connect555": {
-          "b": 70.5,
-          "bonus": 93,
-          "u": 15
+          "b": 75.5,
+          "bonus": 102,
+          "u": 16
         },
         "kakosik": {
-          "b": 40,
+          "b": 41,
           "bonus": 17,
-          "u": 17
+          "u": 18
         },
         "piotrek401": {
-          "b": 64,
-          "bonus": 62,
-          "u": 18
+          "b": 68,
+          "bonus": 67,
+          "u": 19
         },
         "blackalleb": {
           "b": 45,
@@ -23,14 +23,14 @@
           "u": 16
         },
         "arsenipapell": {
-          "b": 27,
+          "b": 29,
           "bonus": 8,
-          "u": 15
+          "u": 16
         },
         "feniks112": {
-          "b": 35,
-          "bonus": 13,
-          "u": 13
+          "b": 38,
+          "bonus": 16,
+          "u": 14
         },
         "setallar": {
           "b": 8,
@@ -627,6 +627,31 @@
             },
             {
               "nick": "piotrek401",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9350442",
+          "data": [
+            {
+              "nick": "connect555",
+              "body": 5
+            },
+            {
+              "nick": "piotrek401",
+              "body": 4
+            },
+            {
+              "nick": "feniks112",
+              "body": 3
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 2
+            },
+            {
+              "nick": "kakosik",
               "body": 1
             }
           ]

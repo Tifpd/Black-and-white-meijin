@@ -3,24 +3,24 @@
     "2026-H1": {
       "players": {
         "connect555": {
-          "b": 75.5,
-          "bonus": 102,
-          "u": 16
+          "b": 81.5,
+          "bonus": 107,
+          "u": 17
         },
         "kakosik": {
-          "b": 42,
+          "b": 45,
           "bonus": 20,
-          "u": 19
-        },
-        "piotrek401": {
-          "b": 70,
-          "bonus": 76,
           "u": 20
         },
+        "piotrek401": {
+          "b": 74.5,
+          "bonus": 79,
+          "u": 21
+        },
         "blackalleb": {
-          "b": 47,
+          "b": 50,
           "bonus": 32,
-          "u": 17
+          "u": 18
         },
         "arsenipapell": {
           "b": 29,
@@ -28,9 +28,9 @@
           "u": 16
         },
         "feniks112": {
-          "b": 39,
+          "b": 42.5,
           "bonus": 16,
-          "u": 15
+          "u": 16
         },
         "setallar": {
           "b": 8,
@@ -48,9 +48,9 @@
           "u": 1
         },
         "puholek": {
-          "b": 21,
-          "bonus": 32,
-          "u": 4
+          "b": 28,
+          "bonus": 41,
+          "u": 5
         },
         "markhorvath": {
           "b": 5,
@@ -63,9 +63,9 @@
           "u": 1
         },
         "uida0": {
-          "b": 2,
+          "b": 3,
           "bonus": 0,
-          "u": 1
+          "u": 2
         },
         "gtlojza": {
           "b": 7,
@@ -673,6 +673,39 @@
             },
             {
               "nick": "feniks112",
+              "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9353386",
+          "data": [
+            {
+              "nick": "puholek",
+              "body": 7
+            },
+            {
+              "nick": "connect555",
+              "body": 6
+            },
+            {
+              "nick": "piotrek401",
+              "body": 4.5
+            },
+            {
+              "nick": "feniks112",
+              "body": 3.5
+            },
+            {
+              "nick": "kakosik",
+              "body": 3
+            },
+            {
+              "nick": "blackalleb",
+              "body": 3
+            },
+            {
+              "nick": "uida0",
               "body": 1
             }
           ]

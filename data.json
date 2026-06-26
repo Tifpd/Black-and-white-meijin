@@ -10,17 +10,17 @@
         "kakosik": {
           "b": 51,
           "bonus": 28,
-          "u": 24
+          "u": 25
         },
         "piotrek401": {
-          "b": 85,
-          "bonus": 102,
-          "u": 24
+          "b": 88,
+          "bonus": 111,
+          "u": 25
         },
         "blackalleb": {
-          "b": 55.5,
-          "bonus": 35,
-          "u": 21
+          "b": 57.5,
+          "bonus": 40,
+          "u": 22
         },
         "arsenipapell": {
           "b": 35,
@@ -28,9 +28,9 @@
           "u": 19
         },
         "feniks112": {
-          "b": 51.5,
-          "bonus": 27,
-          "u": 20
+          "b": 52.5,
+          "bonus": 30,
+          "u": 21
         },
         "setallar": {
           "b": 8,
@@ -803,6 +803,27 @@
             {
               "nick": "kakosik",
               "body": 1
+            }
+          ]
+        },
+        {
+          "id": "9359535",
+          "data": [
+            {
+              "nick": "piotrek401",
+              "body": 3
+            },
+            {
+              "nick": "blackalleb",
+              "body": 2
+            },
+            {
+              "nick": "feniks112",
+              "body": 1
+            },
+            {
+              "nick": "kakosik",
+              "body": 0
             }
           ]
         }

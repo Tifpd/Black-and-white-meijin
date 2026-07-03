@@ -2064,6 +2064,71 @@
           ]
         }
       ]
+    },
+    "2026-H2": {
+      "players": {
+        "puholek": {
+          "b": 0,
+          "bonus": 9,
+          "u": 1
+        },
+        "connect555": {
+          "b": 0,
+          "bonus": 5,
+          "u": 1
+        },
+        "piotrek401": {
+          "b": 0,
+          "bonus": 3,
+          "u": 1
+        },
+        "whitealleb": {
+          "b": 0,
+          "bonus": 0,
+          "u": 1
+        },
+        "arsenipapell": {
+          "b": 0,
+          "bonus": 0,
+          "u": 1
+        },
+        "kakosik": {
+          "b": 0,
+          "bonus": 0,
+          "u": 1
+        }
+      },
+      "history": [
+        {
+          "id": "9360323",
+          "data": [
+            {
+              "nick": "puholek",
+              "body": 0
+            },
+            {
+              "nick": "connect555",
+              "body": 0
+            },
+            {
+              "nick": "piotrek401",
+              "body": 0
+            },
+            {
+              "nick": "whitealleb",
+              "body": 0
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 0
+            },
+            {
+              "nick": "kakosik",
+              "body": 0
+            }
+          ]
+        }
+      ]
     }
   }
 }

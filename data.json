@@ -2064,6 +2064,101 @@
           ]
         }
       ]
+    },
+    "2026-H2": {
+      "players": {
+        "connect555": {
+          "b": 7.5,
+          "bonus": 18,
+          "u": 2
+        },
+        "feniks112": {
+          "b": 3,
+          "bonus": 5,
+          "u": 1
+        },
+        "whitealleb": {
+          "b": 5,
+          "bonus": 6,
+          "u": 2
+        },
+        "piotrek401": {
+          "b": 3.5,
+          "bonus": 0,
+          "u": 2
+        },
+        "kakosik": {
+          "b": 3,
+          "bonus": 0,
+          "u": 2
+        },
+        "puholek": {
+          "b": 2,
+          "bonus": 5,
+          "u": 1
+        },
+        "arsenipapell": {
+          "b": 0,
+          "bonus": 0,
+          "u": 1
+        }
+      },
+      "history": [
+        {
+          "id": "9362065",
+          "data": [
+            {
+              "nick": "connect555",
+              "body": 4.5
+            },
+            {
+              "nick": "feniks112",
+              "body": 3
+            },
+            {
+              "nick": "whitealleb",
+              "body": 3
+            },
+            {
+              "nick": "piotrek401",
+              "body": 2.5
+            },
+            {
+              "nick": "kakosik",
+              "body": 2
+            }
+          ]
+        },
+        {
+          "id": "9360323",
+          "data": [
+            {
+              "nick": "connect555",
+              "body": 3
+            },
+            {
+              "nick": "puholek",
+              "body": 2
+            },
+            {
+              "nick": "whitealleb",
+              "body": 2
+            },
+            {
+              "nick": "piotrek401",
+              "body": 1
+            },
+            {
+              "nick": "kakosik",
+              "body": 1
+            },
+            {
+              "nick": "arsenipapell",
+              "body": 0
+            }
+          ]
+        }
+      ]
     }
   }
 }

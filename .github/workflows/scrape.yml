@@ -1,37 +1,51 @@
-name: Automated Playok Scraper
+name: PlayOK Scraper
 
 on:
   schedule:
-    - cron: '0 * * * *' # Běží každou hodinu
-  workflow_dispatch:
+    # 21:00 UTC = 23:00 v létě (CEST)
+    # 22:00 UTC = 23:00 v zimě (CET)
+    - cron: '0 21 * * 5'
+    - cron: '0 22 * * 5'
+  workflow_dispatch: # Ponechává možnost spustit scraper kdykoliv ručně tlačítkem
 
 jobs:
-  build:
+  scrape:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: '18'
+
+      # POJISTKA NA LETNÍ/ZIMNÍ ČAS:
+      # Pokud jde o plánovaný běh (schedule), ověříme, zda je v Praze přesně 23:00.
+      # Pokud ne, skript se během 2 sekund úspěšně ukončí, aniž by dělal zbytečnou práci.
+      - name: Check if it is 23:00 Prague time
+        if: github.event_name == 'schedule'
+        run: |
+          PRAGUE_HOUR=$(TZ="Europe/Prague" date +%H)
+          echo "Current hour in Prague is: $PRAGUE_HOUR"
+          if [ "$PRAGUE_HOUR" != "23" ]; then
+            echo "It is not 23:00 in Prague. Skipping run."
+            exit 0
+          fi
 
       - name: Install dependencies
-        run: npm install axios cheerio
+        run: npm install
 
-      - name: Run scraper
+      - name: Run Scraper
         run: node scraper.js
         env:
-          # TENTO ŘÁDEK JE KLÍČOVÝ PRO DISCORD:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
-      - name: Commit and push changes
+      # Automatické uložení nově vygenerovaných dat zpět do tvého data.json na GitHubu
+      - name: Commit and Push changes
         run: |
-          git config --global user.name "Meijin Bot"
-          git config --global user.email "bot@meijin.com"
+          git config --global user.name "GitHub Action Bot"
+          git config --global user.email "actions@github.com"
           git add data.json
-          git commit -m "Automated update: New tournament data" || exit 0
+          git diff-index --quiet HEAD || git commit -m "Auto-update standings"
           git push
